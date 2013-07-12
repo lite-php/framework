@@ -9,30 +9,31 @@ class Index_Controller extends Controller
 	public function __construct()
 	{
 		/**
-		 * Here we can initialize
+		 * Add the stylesheet list to the view
 		 */
+		$this->view->stylesheets = array("bootstrap.min");
+
+		/**
+		 * Set the javascripts for the view
+		 */
+		$this->view->scripts = array("jquery.min", "bootstrap.min");
 	}
 
 	public function index()
 	{
 		/**
-		 * Send some content
+		 * Fetch the todos from the datastore
 		 */
-		$this->output->send("Hello World");
-	}
-
-	public function json()
-	{
-		$payload = array("key" => "value");
+		$todos = $this->model->todos->all('todos');
 
 		/**
-		 * Send it via sendJSON
+		 * Set the todos to the view
 		 */
-		$this->output->sendJSON($payload);
-	}
+		$this->view->todos = $todos;
 
-	public function template()
-	{
-		$this->view->render("index", array("title" => "Hello World"));
+		/**
+		 * Render the output
+		 */
+		$this->view->render('index');
 	}
 }

@@ -4,6 +4,11 @@
  *
  * @description: simple and powerful PHP Framework
  */
+!defined('SECURE') && die('Access Forbidden!');
+
+/**
+ * Error Handler Class
+ */
 class ErrorHandler
 {
 	/**

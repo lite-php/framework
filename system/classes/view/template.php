@@ -4,6 +4,11 @@
  *
  * @description: simple and powerful PHP Framework
  */
+!defined('SECURE') && die('Access Forbidden!');
+
+/**
+ * Template Class
+ */
 class Template
 {
 	/**
@@ -63,6 +68,21 @@ class Template
 		 * Send this data to the output class
 		 */
 		Registry::get('HTTPOutput')->send($content);
+	}
+
+	/**
+	 * Returns a variable from the data stack
+	 * @param  string $param
+	 * @return *
+	 */
+	public function __get($param)
+	{
+		return isset($this->__DATA_[$param]) ? $this->__DATA_[$param] : null;
+	}
+
+	public function __isset($param)
+	{
+		return isset($this->__DATA_[$param]);
 	}
 
 	public function partial($partial, $data = array())

@@ -4,6 +4,11 @@
  *
  * @description: simple and powerful PHP Framework
  */
+!defined('SECURE') && die('Access Forbidden!');
+
+/**
+ * View Class
+ */
 class View
 {
 	protected $data = array();
@@ -56,6 +61,6 @@ class View
 		 * Instantiate a new Template object
 		 * This Template will send via the HTTPOutput object
 		 */
-		new Template($application->getViewPath(), $view . '.php', $this->data);
+		new Template($application->getViewsPath(), $view . '.php', $this->data);
 	}
 }

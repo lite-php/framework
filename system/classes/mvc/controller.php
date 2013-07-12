@@ -4,6 +4,11 @@
  *
  * @description: simple and powerful PHP Framework
  */
+!defined('SECURE') && die('Access Forbidden!');
+
+/**
+ * Base Controller Class
+ */
 class Controller
 {
 	public function __get($object)
@@ -20,6 +25,10 @@ class Controller
 
 			case 'view':
 				return Registry::get('View');
+			break;
+
+			case 'model':
+				return Registry::get('Modelloader');
 			break;
 		}
 	}

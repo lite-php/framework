@@ -7,6 +7,10 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
- * Define the absolute path to the system folder
+ * Database Class
+ * @extends PDO
  */
-define('SYSTEM_PATH', __DIR__);
+class Models
+{
+
+}

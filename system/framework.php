@@ -4,6 +4,7 @@
  *
  * @description: simple and powerful PHP Framework
  */
+!defined('SECURE') && die('Access Forbidden!');
 
 /**
  * Require constants
@@ -33,18 +34,32 @@ require_once('classes/http/output.php');
 require_once('classes/application.php');
 
 /**
+ * Require Database core
+ */
+require_once('classes/database/database.php');
+
+/**
  * Require the route and MVC Classes
  */
-require_once('classes/route.php');
+require_once('classes/mvc/model.php');
 require_once('classes/mvc/controller.php');
 require_once('classes/mvc/view.php');
+
+/**
+ * Require other dependancies
+ */
+require_once('classes/loader.php');
+require_once('classes/modelloader.php');
+require_once('classes/route.php');
 require_once('classes/view/template.php');
 
 /**
  * Instantiate objects into the registry
  */
-Registry::set('View', new View());
-Registry::set('HTTPInput', new HTTPInput());
+Registry::set('View', 		new View());
+Registry::set('Model', 		new Model());
+Registry::set('Modelloader',new ModelLoader());
+Registry::set('HTTPInput', 	new HTTPInput());
 Registry::set('HTTPOutput', new HTTPOutput());
-Registry::set('Route', new Route());
-Registry::set('Application', new Application());
+Registry::set('Route', 		new Route());
+Registry::set('Application',new Application());
