@@ -1,0 +1,53 @@
+#
+# LitePHP - Mod Reqrite for clean urls
+#
+
+#
+# Disable multiview as thsi causes issues with an index based controller
+#
+Options -MultiViews
+
+#
+# Set the directory index (this is usually done in apache2.conf)
+#
+DirectoryIndex index.php
+
+#
+# Run reqrite rules if mod-rewrite is installed and enabled
+#
+<IfModule mod_rewrite.c>
+
+  #
+  # Enable Mod Rewrite
+  #
+  RewriteEngine On
+
+  #
+  # Set the application path (without end slash), this can just be a /
+  # if the applications is running at the root of the domain.
+  #
+  RewriteBase /litephp
+
+  #
+  # Do not reqrite this request if there is a file available for download.
+  #
+  RewriteCond %{REQUEST_FILENAME} !-f
+
+  #
+  # Do not rewrite if there is a folder available on the system
+  # This can be enabled if you choose to disable Indexes
+  #
+  # RewriteCond %{REQUEST_FILENAME} !-d
+
+  #
+  # Rewrite to the request URI to the bootstrap controller
+  #
+  RewriteRule ^(.*)$ index.php?$1 [L]
+</IfModule>
+
+#
+# If the mod_rewrite extension is not available reqrite all requests to index.php
+#
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 /litephp/index.php
+</IfModule>
