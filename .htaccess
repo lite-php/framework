@@ -23,6 +23,12 @@ DirectoryIndex index.php
   RewriteEngine On
 
   #
+  # Set an enviroment variable to aid the system in figuring out what to do.
+  # This tells the system to use the QUERY_STRING key for getting the route
+  #
+  SetEnv ROUTE_KEY QUERY_STRING
+
+  #
   # Set the application path (without end slash), this can just be a /
   # if the applications is running at the root of the domain.
   #
@@ -49,5 +55,13 @@ DirectoryIndex index.php
 # If the mod_rewrite extension is not available reqrite all requests to index.php
 #
 <IfModule !mod_rewrite.c>
-    ErrorDocument 404 /litephp/index.php
+  #
+  # This tells the system to use the REQUEST_URI key for getting the route
+  #
+  SetEnv ROUTE_KEY REQUEST_URI
+
+  #
+  # Redirect the requests to the index.php
+  #
+  ErrorDocument 404 /litephp/index.php
 </IfModule>
