@@ -1,5 +1,5 @@
 <head>
-	<title><?php isset($this->title) ? $this->title : "Defualt Title"; ?></title>
+	<title><?php echo isset($this->title) ? $this->title : "Todos"; ?></title>
 	<?php $this->partial('scripts'); ?>
 	<?php $this->partial('stylesheets'); ?>
 </head>

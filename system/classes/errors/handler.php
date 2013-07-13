@@ -19,7 +19,7 @@ class ErrorHandler
 	/**
 	 * Return an instance of the exception handler
 	 */
-	public static function GetInstanCe()
+	public static function getInstance()
 	{
 		if(!self::$__instance)
 		{
@@ -40,6 +40,10 @@ class ErrorHandler
 		 * Set the error handler
 		 */
 		set_error_handler(array($this, 'handleError'));
+
+		/**
+		 * Set the error reporting level.
+		 */
 	}
 
 	/**

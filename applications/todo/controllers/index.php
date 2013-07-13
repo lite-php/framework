@@ -6,6 +6,9 @@
  */
 class Index_Controller extends Controller
 {
+	/**
+	 * Index Controller
+	 */
 	public function __construct()
 	{
 		/**
@@ -16,9 +19,12 @@ class Index_Controller extends Controller
 		/**
 		 * Set the javascripts for the view
 		 */
-		$this->view->scripts = array("jquery.min", "bootstrap.min");
+		$this->view->scripts = array("jquery.min", "bootstrap.min", 'app');
 	}
 
+	/**
+	 * Index Method
+	 */
 	public function index()
 	{
 		/**

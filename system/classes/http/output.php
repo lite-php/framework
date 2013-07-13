@@ -14,12 +14,9 @@ class HTTPOutput
 	/**
 	 * Headers container
 	 */
-	protected $headers = array();
-
-	/**
-	 * Data Stack
-	 */
-	protected $data = array();
+	protected $headers = array(
+		'Content-Type' => 'text/html'
+	);
 
 	/**
 	 * @cosntructor
@@ -33,51 +30,90 @@ class HTTPOutput
 	 */
 	public function clear()
 	{
-		$this->data = array();
+		/**
+		 * Reset the headers array
+		 */
+		$this->clearHeaders();
 	}
 
 	/**
-	 * Set a key value pair to be passed to the output
-	 * this can passed to a template or a json response for example.
+	 * Set the content type header
+	 * @param string $contentType
 	 */
-	public function set($key, $value)
+	public function setContentType($contentType)
 	{
-		$this->data[$key] = $value;
+		$this->setHeader('Content-Type', $contentType);
 	}
 
-	public function remove($key)
+	/**
+	 * Sends an object as a json string
+	 * @param  *  $data
+	 * @param  integer $options
+	 */
+	public function sendJSON($data, $options = 0)
 	{
-		unset($this->data[$key]);
-	}
+		/**
+		 * encode the json
+		 */
+		$payload = json_encode($data, $options);
 
-	public function sendJSON($payload)
-	{
-		try
+		/**
+		 * Check to see wether we have a valid json string.
+		 */
+		if($payload === false)
 		{
-			$this->setHeader("Content-Type", 'application/json');
-			$this->send(json_encode($payload));
-		}catch(Exception $e)
-		{
-			throw new Error("Data cannot be converted to JSON", 1, $e);
+			throw new Exception("Unable to send json: " . json_last_error());
 		}
+
+		/**
+		 * Set the application/josn header format
+		 */
+		$this->setContentType('application/json');
+
+		/**
+		 * Send the payload to the client
+		 */
+		$this->send($payload);
 	}
 
+	/**
+	 * Send a payload of data tot he client
+	 * @param  string $data
+	 */
 	public function send($data)
 	{
 		/**
-		 * Flush the headers
+		 * Send the headers
 		 */
-		if(!headers_sent())
-		{
-			foreach ($this->headers as $key => $value) {
-				header($key . ': ' . $value);
-			}
-		}
+		$this->sendHeaders();
 
 		/**
 		 * print the data
 		 */
 		echo $data;
+	}
+	/**
+	 * Send the headers if headers have not already been sent
+	 * @return boolean
+	 */
+	public function sendHeaders()
+	{
+		if(!headers_sent())
+		{
+			foreach ($this->headers as $key => $value) {
+				header($key . ': ' . $value);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Set a header to the output.
+	 */
+	public function clearHeaders()
+	{
+		$this->headers = array();
 	}
 
 	/**
@@ -91,7 +127,7 @@ class HTTPOutput
 	/**
 	 * Delete a header from out.
 	 */
-	public function deleteHeader($key)
+	public function removeHeader($key)
 	{
 		unset($this->headers[$key]);
 	}

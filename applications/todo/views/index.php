@@ -16,6 +16,16 @@
 			<div class="row">
 				<?php $this->partial('todo/create'); ?>
 			</div>
+
+			<!-- Auto mark as completed -->
+			<div class="row">
+				<?php $this->partial("todo/markall"); ?>
+			</div>
+
+			<!-- Todo list -->
+			<div class="row">
+				<?php $this->partial("todo/list", $this->todos); ?>
+			</div>
 		</div>
 	</body>
 </html>

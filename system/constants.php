@@ -9,4 +9,4 @@
 /**
  * Define the absolute path to the system folder
  */
-define('SYSTEM_PATH', __DIR__);
+!defined('SYSTEM_PATH') && define('SYSTEM_PATH', __DIR__);

@@ -80,11 +80,21 @@ class Template
 		return isset($this->__DATA_[$param]) ? $this->__DATA_[$param] : null;
 	}
 
+	/**
+	 * Returns true/false depending on if a template param has been set
+	 * @param  string  $param
+	 * @return boolean
+	 */
 	public function __isset($param)
 	{
 		return isset($this->__DATA_[$param]);
 	}
 
+	/**
+	 * Requires a partial template file and renders in place.
+	 * @param  string $partial
+	 * @param  array  $data
+	 */
 	public function partial($partial, $data = array())
 	{
 		/**
