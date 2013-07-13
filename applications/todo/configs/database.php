@@ -7,33 +7,45 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
- * Get the applications base path for the dsn
+ * Application Configuration
  */
-$basepath = Registry::get('Application')->getBasePath();
-
-/**
- * Database Configuration array
- * @var array
- */
-$config = array(
+class Database_Config
+{
 	/**
-	 * DSN Path used to lookup the database.
-	 * @link http://www.php.net/manual/en/pdo.construct.php PDO::Construct
+	 * DSN Used to connect to the database
+	 * @var string
+	 * @see http://php.net/manual/en/pdo.construct.php
 	 */
-	"dsn" => "sqlite:$basepath/todo.sqlite",
+	public $dsn = null;
 
 	/**
-	 * Username to be passed to the connection handler
+	 * Username used for authentication
+	 * @var string
+	 * @see http://php.net/manual/en/pdo.construct.php
 	 */
-	"username" => null,
+	public $username = null;
 
 	/**
-	 * Password used for authentication.
+	 * Password used for authentication
+	 * @var string
+	 * @see http://php.net/manual/en/pdo.construct.php
 	 */
-	"password" => null,
+	public $password = null;
 
 	/**
-	 * Driver Options passed to the PDO Connection Handler
+	 * Driver Options used for PDO
+	 * @var array
+	 * @see http://php.net/manual/en/pdo.construct.php
 	 */
-	"driver_options" => array()
-);
+	public $driver_options = array();
+
+	/**
+	 * Within when using SQLLite we need to specifiy a path on teh filesystem.
+	 * We do that by using the constructor to access the Application so we can get the application path
+	 * For instances like mysql you can just set the value within the the class variables.
+	 */
+	public function __construct()
+	{
+		$this->dsn = "sqlite:" . Registry::get('Application')->getResourceLocation(null, 'todo', 'sqlite');
+	}
+}

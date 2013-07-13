@@ -9,7 +9,7 @@
 /**
  * This class loads objects from a directory and keeps an instance of them
  */
-class Loader
+class BaseLoader
 {
 	/**
 	 * Base Directory - Path where objects should be loaded
@@ -54,10 +54,9 @@ class Loader
 	protected $lowercase = true;
 
 	/**
-	 * USed for getting and triggering the loading of an object
-	 * @return object
+	 * Return a configuration
 	 */
-	public function __get($key)
+	public function get($key)
 	{
 		if($this->lowercase)
 		{
@@ -73,22 +72,22 @@ class Loader
 		}
 
 		/**
+		 * Compile the class name
+		 */
+		$class = $this->getProcessedClassname($key);
+
+		/**
 		 * does the file exists
 		 */
 		if(!$this->exists($key))
 		{
-			throw new Exception("Unable to load class (" . $key . "), file does not exists");
+			throw new Exception("Unable to load class (" . $class . "), file does not exists");
 		}
 
 		/**
 		 * Require the object
 		 */
 		require_once $this->getProcessedFilename($key);
-
-		/**
-		 * Compile the class name
-		 */
-		$class = $this->getProcessedClassname($key);
 
 		/**
 		 * Check to see if the class exists
@@ -102,6 +101,15 @@ class Loader
 		 * Instatiate and store the class
 		 */
 		return $this->objects[ $key ] = new $class();
+	}
+
+	/**
+	 * USed for getting and triggering the loading of an object
+	 * @return object
+	 */
+	public function __get($key)
+	{
+		return $this->get($key);
 	}
 
 	/**

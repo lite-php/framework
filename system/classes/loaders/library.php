@@ -10,13 +10,13 @@
  * Database Class
  * @extends PDO
  */
-class ModelLoader extends Loader
+class LibraryLoader extends BaseLoader
 {
 	/**
 	 * Class suffix
 	 * @var string
 	 */
-	protected $class_suffix = '_Model';
+	protected $class_suffix = '_Library';
 
 	/**
 	 * File suffix
@@ -25,20 +25,20 @@ class ModelLoader extends Loader
 	protected $file_suffix = '.php';
 
 	/**
-	 * Override the __get method and set the base if required
+	 * Override the gets method and set the base if required
 	 * @param  string $key
 	 * @return object
 	 */
-	public function __get($key)
+	public function get($key)
 	{
 		if(empty($this->base))
 		{
-			$this->base = Registry::get('Application')->getModelsPath();
+			$this->base = Registry::get('Application')->getResourceLocation('libraries');
 		}
 
 		/**
 		 * Continue the process in the parent loader
 		 */
-		return parent::__get($key);
+		return parent::get($key);
 	}
 }

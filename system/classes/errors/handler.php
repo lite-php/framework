@@ -12,6 +12,8 @@
 class ErrorHandler
 {
 	/**
+	 * Static ErrorHandler instance varaible, used for tracking a single instance
+	 * og this object.
 	 * @type ErrorHandler static class holder.
 	 */
 	private static $__instance;
@@ -29,6 +31,10 @@ class ErrorHandler
 		return self::$__instance;
 	}
 
+	/**
+	 * Instnatiate a new ErrorHandler object.
+	 * @see ErrorHandler::getInstance
+	 */
 	public function __construct()
 	{
 		/**
@@ -60,9 +66,23 @@ class ErrorHandler
 	public function handleException(Exception $e)
 	{
 		/**
-		 * @todo: Extend this functionality.
+		 * Check to see if we can dispose this error
 		 */
-		var_dump($e);die();
-		throw $e;
+		
+		/**
+		 * Attaempt tp clear out any buffers
+		 */
+		while(ob_get_level() > 0) {
+			ob_end_clean();
+		}
+		
+		/**
+		 * Set the respons code to a 500 if headers are not sent.
+		 */
+		
+		/**
+		 * Require the template
+		 */
+		require 'views/errors/exception.php';
 	}
 }

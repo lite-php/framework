@@ -12,6 +12,11 @@
 				<?php $this->partial('todo/header'); ?>
 			</div>
 
+			<!-- Notices Row -->
+			<div class="row">
+				<?php $this->partial('todo/noticies'); ?>
+			</div>
+
 			<!-- Create Row -->
 			<div class="row">
 				<?php $this->partial('todo/create'); ?>

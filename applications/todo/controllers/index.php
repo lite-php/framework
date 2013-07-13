@@ -42,4 +42,8 @@ class Index_Controller extends Controller
 		 */
 		$this->view->render('index');
 	}
+
+	public function library()
+	{
+	}
 }

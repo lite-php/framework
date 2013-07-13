@@ -44,7 +44,12 @@ class Database extends PDO
 		/**
 		 * Call the parent constructor
 		 */
-		parent::__construct($config['dsn'], $config['username'], $config['password'], $config['driver_options']);
+		parent::__construct($config->dsn, $config->username, $config->password, $config->driver_options);
+
+		/**
+		 * Set the attributes parent
+		 */
+		parent::setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 	}
 
 	/**

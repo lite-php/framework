@@ -18,18 +18,13 @@ class Application
 	private $applicationPath;
 
 	/**
-	 * Configurations loaded
-	 * @var array
-	 */
-	protected $configs = array();
-
-	/**
 	 * Applciation Constructor
 	 */
 	public function __construct(){}
 
 	/**
-	 * Set the applications base path
+	 * Set the base path of the application that should be run.
+	 * The path must contain atlest a controllers path.
 	 * @param string $path
 	 */
 	public function setApplicationPath($path)
@@ -147,85 +142,20 @@ class Application
 	 * @return object
 	 * @throws Exception If the configuration file does nto exists or is currupt
 	 */
-	public function getConfiguration($key, $index = false)
+	public function getConfiguration($key)
 	{
-		/**
-		 * Normalize the key value
-		 * @var string
-		 */
-		$key = strtolower($key);
-
-		/**
-		 * Check to see if the ocnfiguration file has been loaded
-		 */
-		if(!array_key_exists($key, $this->configs))
-		{
-			/**
-			 * Check to see if the configuration file exists.
-			 */
-			if(!$this->configurationExists($key))
-			{
-				throw new Exception("Configuration file (" . $key . ") does not exist", 1);
-			}
-
-			/**
-			 * Require the configuration file
-			 */
-			require_once $this->getConfigurationsPath($key);
-
-			/**
-			 * Validate that we have a config variable
-			 */
-			if(!isset($config))
-			{
-				throw new Exception("Configuration does not contain a \$config array", 1);
-			}
-
-			/**
-			 * Create a new configuration array within the config stack
-			 */
-			$this->configs[ $key ] = $config;
-		}
-
-		/**
-		 * If we have a index then return that element
-		 */
-		if($index !== false)
-		{
-			return isset($this->configs[ $key ][ $index ]) ? $this->configs[ $key ][ $index ] : null;
-		}
-
-		return $this->configs[ $key ];
+		return Registry::get('ConfigLoader')->get($key);
 	}
 
 	/**
-	 * Checks to see if the specified configuration file exists
-	 * @param  string $config
-	 * @return boolean
+	 * Return a path to a folder within the application area.
 	 */
-	public function configurationExists($config)
+	public function getResourceLocation($folder = false, $file = false, $ext = false)
 	{
-		return file_exists($this->getConfigurationsPath($config));
-	}
-
-	/**
-	 * Returns the path to the configuration file
-	 * @param  string $path
-	 * @return string
-	 */
-	public function getConfigurationsPath($path = false)
-	{
-		return $this->applicationPath . ('/configs' . ($path  !== false ? '/' . $path . '.php' : ''));
-	}
-
-	/**
-	 * Returns the path to a a controller file
-	 * @param  string $controller
-	 * @return string
-	 */
-	public function getControllerPath($controller)
-	{
-		return $this->applicationPath . '/controllers/' . $controller . '.php';
+		/**
+		 * Value to return defaults to the application root
+		 */
+		return $this->applicationPath . ($folder ? '/' . $folder : '') . ($file ? '/' . $file : '') . ($ext ? '.' . $ext : '');
 	}
 
 	/**
@@ -235,28 +165,17 @@ class Application
 	 */
 	public function controllerExists($controller)
 	{
-		/**
-		 * Check to see if the controller exists
-		 */
-		return file_exists($this->getControllerPath($controller));
+		return file_exists($this->getResourceLocation('controllers', $controller, 'php'));
 	}
 
 	/**
-	 * Returns the path to the views folder
+	 * Returns the path to a a controller file
+	 * @param  string $controller
 	 * @return string
 	 */
-	public function getViewsPath()
+	public function getControllerPath($controller)
 	{
-		return $this->applicationPath . '/views/';
-	}
-
-	/**
-	 * Returns the path to the views folder
-	 * @return string
-	 */
-	public function getModelsPath()
-	{
-		return $this->applicationPath . '/models';
+		return $this->getResourceLocation('controllers', $controller, 'php');
 	}
 
 	/**
@@ -266,10 +185,7 @@ class Application
 	 */
 	public function viewExists($view)
 	{
-		/**
-		 * Check to see if the controller exists
-		 */
-		return file_exists($this->getViewsPath() . $view . '.php');
+		return file_exists($this->getResourceLocation('views', $view, 'php'));
 	}
 
 	/**
@@ -277,8 +193,8 @@ class Application
 	 * @param  string $view
 	 * @return Boolean
 	 */
-	public function getBasePath()
+	public function getApplicationPath()
 	{
-		return $this->applicationPath;
+		return $this->getResourceLocation();
 	}
 }

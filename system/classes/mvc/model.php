@@ -32,7 +32,4 @@ class Model extends Database
 
 		return $statement->fetchAll();
 	}
-
-	public function insert(){}
-	public function get(){}
 }

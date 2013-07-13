@@ -11,6 +11,10 @@
  */
 class View
 {
+	/**
+	 * A local scope that allows the collection of params frmo the controller.
+	 * @var array
+	 */
 	protected $data = array();
 
 	/**
@@ -37,6 +41,10 @@ class View
 		return isset($this->data[$key]);
 	}
 
+	/**
+	 * Renders a view file and outputs to the output class.
+	 * @param  string $view
+	 */
 	public function render($view)
 	{
 		/**
@@ -61,6 +69,6 @@ class View
 		 * Instantiate a new Template object
 		 * This Template will send via the HTTPOutput object
 		 */
-		new Template($application->getViewsPath(), $view . '.php', $this->data);
+		new Template($application->getResourceLocation('views'), $view . '.php', $this->data);
 	}
 }

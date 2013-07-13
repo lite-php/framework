@@ -46,20 +46,28 @@ require_once('classes/mvc/controller.php');
 require_once('classes/mvc/view.php');
 
 /**
+ * Require the loaders
+ */
+require_once('classes/loaders/base.php');
+require_once('classes/loaders/model.php');
+require_once('classes/loaders/library.php');
+require_once('classes/loaders/config.php');
+
+/**
  * Require other dependancies
  */
-require_once('classes/loader.php');
-require_once('classes/modelloader.php');
 require_once('classes/route.php');
 require_once('classes/view/template.php');
 
 /**
  * Instantiate objects into the registry
  */
-Registry::set('View', 		new View());
-Registry::set('Model', 		new Model());
-Registry::set('Modelloader',new ModelLoader());
-Registry::set('HTTPInput', 	new HTTPInput());
-Registry::set('HTTPOutput', new HTTPOutput());
-Registry::set('Route', 		new Route());
-Registry::set('Application',new Application());
+Registry::set('View', 			new View());
+Registry::set('Model', 			new Model());
+Registry::set('Modelloader',	new ModelLoader());
+Registry::set('Libraryloader',	new LibraryLoader());
+Registry::set('ConfigLoader',	new ConfigLoader());
+Registry::set('HTTPInput', 		new HTTPInput());
+Registry::set('HTTPOutput', 	new HTTPOutput());
+Registry::set('Route', 			new Route());
+Registry::set('Application',	new Application());

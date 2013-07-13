@@ -12,11 +12,13 @@
 class Route
 {
 	/**
+	 * Input Object for interfacing with the input
 	 * @type HTTPInput Input Interface
 	 */
 	public $input;
 
 	/**
+	 * Output Object for interfacing with the output
 	 * @type HTTPOutput Output interface
 	 */
 	public $output;
@@ -37,7 +39,8 @@ class Route
 	protected $arguments = array();
 
 	/**
-	 * @cosntructor
+	 * Initialize a new Route object and setting I/O Objects.
+	 * @constructor
 	 */
 	public function __construct()
 	{
@@ -57,6 +60,10 @@ class Route
 		$this->_parse();
 	}
 
+	/**
+	 * Analyses various values to detect requested controller and method.
+	 * @return [type]
+	 */
 	private function _parse()
 	{
 		/**

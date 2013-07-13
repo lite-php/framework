@@ -31,7 +31,7 @@ class HTTPInput
 	protected $ip = '0.0.0.0';
 
 	/**
-	 * @cosntructor
+	 * Initiates a new Input Object
 	 */
 	public function __construct()
 	{

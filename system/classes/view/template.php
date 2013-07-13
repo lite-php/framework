@@ -22,7 +22,7 @@ class Template
 	private $__BASE_PATH_;
 
 	/**
-	 * @constructor - We compile here so we don't clog the view's namespace
+	 * We compile here so we don't clog the view's namespace
 	 */
 	public function __construct($__base_path, $__template, $__data)
 	{
@@ -103,6 +103,10 @@ class Template
 		include $this->__BASE_PATH_ . '/partials/' . $partial . '.php';
 	}
 
+	/**
+	 * Prints out a string encapsulated within an HTML strong tag.
+	 * @param  string $string
+	 */
 	public function bold($string)
 	{
 		echo '<strong>'. $string .'<strong>';

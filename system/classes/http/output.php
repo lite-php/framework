@@ -19,7 +19,7 @@ class HTTPOutput
 	);
 
 	/**
-	 * @cosntructor
+	 * Initializes a new Output Object
 	 */
 	public function __construct()
 	{

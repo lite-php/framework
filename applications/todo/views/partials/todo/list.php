@@ -6,7 +6,7 @@
 	<tbody>
 		<?php foreach ($data as $todo): ?>
 			<tr>
-				<td><p style="margin:5px"><strong><?php echo $todo['description']; ?></strong></p></td>
+				<td><p style="margin:5px"><strong><?php echo $todo->description; ?></strong></p></td>
 				<td>
 					<button class="btn btn-primary" type="button">Edit</button>
 					<button class="btn btn-danger" type="button">Delete</button>
