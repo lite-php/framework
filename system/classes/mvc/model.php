@@ -93,14 +93,6 @@ class Model extends Database
 	{
 	}
 
-	/**
-	 * Empties a table's contents using the DELETE FROM <table> command
-	 * @param  string $table table to be effected
-	 * @return boolean       returns true if the statement executed successfully
-	 */
-	public function empty($table)
-	{
-	}
 
 	/**
 	 * Drops a table schema
