@@ -104,6 +104,35 @@ class Template
 	}
 
 	/**
+	 * Creates a link relative to the base path of the application
+	 */
+	public function route($controller = 'index', $method = 'index')
+	{
+		/**
+		 * Create a url that is set the the base path
+		 */
+		$url = BASE_URL . '/' . $controller . '/' . $method;
+
+		/**
+		 * Loop the arguments
+		 */
+		for($offset = 2; $offset < func_num_args(); $offset++)
+		{
+			$url .= '/' . urlencode(func_get_arg($offset));
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Create a relative link to the base url
+	 */
+	public function link($path = '')
+	{
+		return BASE_URL . '/' . ltrim($path, '/');
+	}
+
+	/**
 	 * Prints out a string encapsulated within an HTML strong tag.
 	 * @param  string $string
 	 */
