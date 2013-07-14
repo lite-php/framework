@@ -45,5 +45,6 @@ class Index_Controller extends Controller
 
 	public function library()
 	{
+		trigger_error("sample");
 	}
 }

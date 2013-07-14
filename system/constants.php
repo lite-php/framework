@@ -7,6 +7,11 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
+ * Define the current version of the framework.
+ */
+!defined('VERSION') && define('VERSION', '1.0.0');
+
+/**
  * Define the absolute path to the system folder
  */
 !defined('SYSTEM_PATH') && define('SYSTEM_PATH', __DIR__);

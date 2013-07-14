@@ -21,34 +21,10 @@ class Todos_Model extends Model
 	public function create($description, $completed)
 	{
 		/**
-		 * Try and insert
+		 * Return the insert value
 		 */
-		$statement = $this->prepare("INSERT INTO todos (description, completed) VALUES (:description, :completed)");
-
-		/**
-		 * Valdiate that we have a statement
-		 */
-		if(!$statement)
-		{
-			throw new Exception("Unable to insert todo into the database", 1);
-		}
-
-		/**
-		 * Execute the request
-		 */
-		$result = $statement->execute(array(
-			':description' => $description,
-			':completed' => $completed
+		return $this->insert("todos", array(
+			"description" => $description, "completed" => $completed
 		));
-
-		/**
-		 * If we have a success, return the id
-		 */
-		if($result)
-		{
-			return $this->lastInsertId('id');
-		}
-
-		return false;
 	}
 }
