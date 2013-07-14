@@ -48,7 +48,7 @@
 			/**
 			 * Push the new todo to the server
 			 */
-			var xhr = $.post('/litephp/ajax/create', {description : $(this).val()}, null,'json');
+			var xhr = $.post(application.ajax_base + '/create', {description : $(this).val()}, null,'json');
 
 			/**
 			 * Monitor for a success call

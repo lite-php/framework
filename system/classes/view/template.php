@@ -106,12 +106,12 @@ class Template
 	/**
 	 * Creates a link relative to the base path of the application
 	 */
-	public function route($controller = 'index', $method = 'index')
+	public function route($controller = null, $method = null)
 	{
 		/**
 		 * Create a url that is set the the base path
 		 */
-		$url = BASE_URL . '/' . $controller . '/' . $method;
+		$url = BASE_URL . ($controller ? '/' . $controller : '') . ($controller && $method ? '/' . $method : '');
 
 		/**
 		 * Loop the arguments
@@ -127,7 +127,7 @@ class Template
 	/**
 	 * Create a relative link to the base url
 	 */
-	public function link($path = '')
+	public function link($path)
 	{
 		return BASE_URL . '/' . ltrim($path, '/');
 	}
