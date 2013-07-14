@@ -46,4 +46,17 @@ class LibraryLoader extends BaseLoader
 		 */
 		return parent::get($key);
 	}
+
+	/**
+	 * Return an absolute/relative path for a given key.
+	 * This function overrides the BaseLoader's method as libraries are stored in
+	 * a subfolder.
+	 * 
+	 * @param  string $key
+	 * @return string
+	 */
+	protected function getProcessedFilename($key)
+	{
+		return $this->base . '/' . $key . '/' . $this->file_prefix . $key . $this->file_suffix;
+	}
 }

@@ -50,6 +50,14 @@ class Index_Controller extends Controller
 
 	public function library()
 	{
-		trigger_error("sample");
+		/**
+		 * Get the session variable
+		 */
+		$session  = $this->library->session;
+
+		/**
+		 * Set avalue then get the value from the session
+		 */
+		echo $session->get('test');
 	}
 }

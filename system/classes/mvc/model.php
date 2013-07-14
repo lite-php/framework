@@ -115,6 +115,11 @@ class Model extends Database
 		$statement = $this->prepare($sql);
 
 		/**
+		 * Execute
+		 */
+		$statement->execute();
+
+		/**
 		 * Return all rows
 		 */
 		return $statement->fetchAll();

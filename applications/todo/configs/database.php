@@ -12,7 +12,7 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
- * Application Configuration
+ * Database Configuration
  */
 class Database_Config
 {
