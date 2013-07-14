@@ -21,7 +21,7 @@ class Session_Library
 	 * Session Handler Interface
 	 * @var SessionHandlerInterface
 	 */
-	private $_handler;
+	protected $_handler;
 
 	/**
 	 * Session Constructor
@@ -81,9 +81,9 @@ class Session_Library
 		/**
 		 * Set the cache expire value
 		 */
-		if(isset($this->_config->expiration) && $this->_config->expiration > 0)
+		if(isset($this->_config->expiration))
 		{
-			session_cache_expire($this->_config->expiration);
+			session_cache_expire((int)$this->_config->expiration);
 		}
 
 		/**
@@ -133,7 +133,10 @@ class Session_Library
 	 */
 	public function get($key)
 	{
-		return $_SESSION[$key];
+		if($this->exists($key))
+		{
+			return $_SESSION[$key]
+		}
 	}
 
 	/**
@@ -143,7 +146,7 @@ class Session_Library
 	 */
 	public function exists($key)
 	{
-		return isset($_SESSION[$key]);
+		return array_key_exists($key, $_SESSION);
 	}
 
 	/**
