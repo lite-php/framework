@@ -19,7 +19,7 @@
 /**
  * Base URL Path
  */
-!defined('BASE_URL') && define('BASE_URL', dirname($_SERVER['PHP_SELF']));
+!defined('BASE_URL') && define('BASE_URL', rtrim(dirname($_SERVER['PHP_SELF']), '/'));
 
 /**
  * Start time
