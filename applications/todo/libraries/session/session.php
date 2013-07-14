@@ -135,7 +135,7 @@ class Session_Library
 	{
 		if($this->exists($key))
 		{
-			return $_SESSION[$key]
+			return $_SESSION[$key];
 		}
 	}
 
