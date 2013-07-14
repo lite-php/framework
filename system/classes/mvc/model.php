@@ -93,6 +93,28 @@ class Model extends Database
 	{
 	}
 
+	/**
+	 * Fetch all from a table
+	 * @param  string $table table to select from
+	 */
+	public function all($table)
+	{
+		/**
+		 * Create a new query
+		 */
+		$sql = "SELECT * FROM " . $table;
+
+		/**
+		 * Create a statement
+		 */
+		$statement = $this->prepare($sql);
+
+		/**
+		 * Return all rows
+		 */
+		return $statement->fetchAll();
+	}
+
 
 	/**
 	 * Drops a table schema
