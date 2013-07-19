@@ -53,7 +53,7 @@ class Route
 		 * Fetch the input object from the registry
 		 */
 		$this->input = Registry::get('HTTPInput');
-
+		
 		/**
 		 * Fetch the output object from the registry
 		 */

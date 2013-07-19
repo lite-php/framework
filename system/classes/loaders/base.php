@@ -20,7 +20,7 @@ class BaseLoader
 	 * Base Directory - Path where objects should be loaded
 	 * @var string
 	 */
-	protected $base = '';
+	protected $base = array();
 
 	/**
 	 * Class prefix
@@ -77,22 +77,32 @@ class BaseLoader
 		}
 
 		/**
+		 * Require the object
+		 */
+		$filename = $this->getProcessedFilename($key);
+
+		/**
+		 * Attempt to lookup the file location
+		 */
+		$filelocation = $this->lookup($filename);
+
+		/**
 		 * Compile the class name
 		 */
 		$class = $this->getProcessedClassname($key);
 
 		/**
-		 * does the file exists
+		 * If we do not have a location, then the file does not exist
 		 */
-		if(!$this->exists($key))
+		if($filelocation === false)
 		{
-			throw new Exception("Unable to load class (" . $class . "), file does not exists");
+			throw new Exception("Unable to load class (" . $key . "), file does not exists");
 		}
 
 		/**
-		 * Require the object
+		 * Load the file
 		 */
-		require_once $this->getProcessedFilename($key);
+		require_once $filelocation;
 
 		/**
 		 * Check to see if the class exists
@@ -117,14 +127,38 @@ class BaseLoader
 		return $this->get($key);
 	}
 
+	public function lookup($file)
+	{
+		/**
+		 * Attempt to discover the location of file
+		 */
+		foreach ($this->base as $basepath)
+		{
+			/**
+			 * Create a pointer to the current file
+			 */
+			$file = $basepath . '/' . $file;
+
+			/**
+			 * If it exists, return the path
+			 */
+			if(file_exists($file))
+			{
+				return $file;
+			}
+		}
+		
+		return false;
+	}
+
 	/**
 	 * Checks to see if a file exists
 	 */
 	protected function exists($key)
 	{
-		if(!$this->base)
+		if(empty($this->base))
 		{
-			throw new Exception("Base class needs to be set by the parent object");
+			throw new Exception("a searchable path must be set by the parent object");
 		}
 
 		/**
@@ -133,9 +167,20 @@ class BaseLoader
 		$filename = $this->getProcessedFilename($key);
 
 		/**
-		 * Return true / false on weither the file exists
+		 * Loop the base paths
 		 */
-		return file_exists($filename);
+		foreach ($this->base as $path)
+		{
+			/**
+			 * If it exists, return true
+			 */
+			if(file_exists($path . '/' . $filename))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -145,7 +190,7 @@ class BaseLoader
 	 */
 	protected function getProcessedFilename($key)
 	{
-		return $this->base . '/' . $this->file_prefix . $key . $this->file_suffix;
+		return $this->file_prefix . $key . $this->file_suffix;
 	}
 
 	/**
@@ -156,5 +201,16 @@ class BaseLoader
 	protected function getProcessedClassname($key)
 	{
 		return $this->class_prefix . $key . $this->class_suffix;
+	}
+
+	protected function addSearchPath($path)
+	{
+		/**
+		 * Valdiate we have a path and that it does not exist
+		 */
+		if(!empty($path) && !in_array($path, $this->base))
+		{
+			array_push($this->base, $path);
+		}
 	}
 }

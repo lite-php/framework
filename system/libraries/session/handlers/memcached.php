@@ -14,14 +14,52 @@
 /**
  * Native Session Interface
  */
-class Session_Library_Driver_Native implements SessionHandlerInterface
+class Session_Library_Driver_Memcached extends Memcached implements SessionHandlerInterface
 {
-	protected $savepath;
+	/**
+	 * Session prefix (filename prefix)
+	 * @var string
+	 */
+	protected $prefix = 'sess_';
+
+	/**
+	 * Configuration Class
+	 */
+	protected $config;
+
 	/**
 	 * Constructor
 	 */
 	public function __construct()
 	{
+		/**
+		 * Fetch the configuration class
+		 */
+		$this->config = Registry::get('ConfigLoader')->session;
+
+		/**
+		 * Construct the parent object with the persistent id
+		 */
+		parent::__construct($this->config->opts['persistent_id']);
+
+		/**
+		 * Set the options if there is any
+		 */
+		if(!empty($this->config->opts['options']))
+		{
+		}
+
+		/**
+		 * Check to see if we need to add servers to the scope
+		 */
+		if(!empty($this->config->opts['servers']))
+		{
+			$servers = $this->config->opts['servers'];
+			foreach ($servers as $host => $port)
+			{
+				$this->addServer($host, $port);
+			}
+		}
 	}
 
 	/**
@@ -40,21 +78,7 @@ class Session_Library_Driver_Native implements SessionHandlerInterface
 	 */
 	public function destroy($id)
 	{
-		/**
-		 * Get the file path
-		 * @var string
-		 */
-		$file = $this->savepath . '/sess_' . $id;
-
-		/**
-		 * Test to see if the file exists
-		 */
-        if(file_exists($file))
-        {
-			return unlink($file);
-        }
-
-        return false;
+		return $this->delete($this->prefix . $id);
 	}
 
 	/**
@@ -64,15 +88,7 @@ class Session_Library_Driver_Native implements SessionHandlerInterface
 	 */
 	public function gc($maxlifetime)
 	{
-       foreach (glob($this->savepath . '/sess_*') as $file)
-       {
-            if (filemtime($file) + $maxlifetime < time())
-            {
-                unlink($file);
-            }
-        }
-
-        return true;
+		return true;
 	}
 
 	/**
@@ -83,14 +99,7 @@ class Session_Library_Driver_Native implements SessionHandlerInterface
 	 */
 	public function open($savepath, $name)
 	{
-        $this->savepath = $savepath;
-
-        if (!is_dir($this->savepath))
-        {
-			return mkdir($this->savepath, 0777);
-        }
-
-        return true;
+		return true;
 	}
 
 	/**
@@ -100,20 +109,7 @@ class Session_Library_Driver_Native implements SessionHandlerInterface
 	 */
 	public function read($id)
 	{
-		/**
-		 * Create file path
-		 */
-		$file  = $this->savepath . '/sess_' . $id;
-
-		/**
-		 * Make sure the file exists
-		 */
-		if(!file_exists($file))
-		{
-			return false;
-		}
-
-		return file_get_contents($file);
+		return $this->get($this->prefix . $id) ? : '';
 	}
 
 	/**
@@ -124,6 +120,6 @@ class Session_Library_Driver_Native implements SessionHandlerInterface
 	 */
 	public function write($id, $data)
 	{
-		return file_put_contents("$this->savepath/sess_$id", $data) === false ? false : true;
+		$this->set($this->prefix . $id, $data, time() + $this->config->expiration);
 	}
 }

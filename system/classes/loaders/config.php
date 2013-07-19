@@ -36,10 +36,11 @@ class ConfigLoader extends BaseLoader
 	 */
 	public function get($key)
 	{
-		if(empty($this->base))
-		{
-			$this->base = Registry::get('Application')->getResourceLocation('configs');
-		}
+		/**
+		 * Add the search path the application
+		 */
+		$this->addSearchPath(Registry::get('Application')->getResourceLocation('configs'));
+		
 
 		/**
 		 * Continue the process in the parent loader

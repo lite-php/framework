@@ -49,6 +49,11 @@
 /**
  * Define true if we are runnning opn php4
  */
+!defined('IS_CLI') && define('IS_CLI', php_sapi_name() == 'cli');
+
+/**
+ * Define true if we are runnning opn php4
+ */
 !defined('IS_PHP4') && define('IS_PHP4', version_compare(PHP_VERSION, '5.0.0', '<'));
 
 /**

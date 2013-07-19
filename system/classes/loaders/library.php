@@ -36,10 +36,15 @@ class LibraryLoader extends BaseLoader
 	 */
 	public function get($key)
 	{
-		if(empty($this->base))
-		{
-			$this->base = Registry::get('Application')->getResourceLocation('libraries');
-		}
+		/**
+		 * Add the search paths for the system folder
+		 */
+		$this->addSearchPath(SYSTEM_PATH . '/libraries');
+		
+		/**
+		 * Add the search path
+		 */
+		$this->addSearchPath(Registry::get('Application')->getResourceLocation('libraries'));
 
 		/**
 		 * Continue the process in the parent loader
@@ -57,6 +62,6 @@ class LibraryLoader extends BaseLoader
 	 */
 	protected function getProcessedFilename($key)
 	{
-		return $this->base . '/' . $key . '/' . $this->file_prefix . $key . $this->file_suffix;
+		return $key . '/' . $this->file_prefix . $key . $this->file_suffix;
 	}
 }

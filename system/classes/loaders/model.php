@@ -36,10 +36,10 @@ class ModelLoader extends BaseLoader
 	 */
 	public function get($key)
 	{
-		if(empty($this->base))
-		{
-			$this->base = Registry::get('Application')->getResourceLocation('models');
-		}
+		/**
+		 * Add the search path
+		 */
+		$this->addSearchPath(Registry::get('Application')->getResourceLocation('models'));
 
 		/**
 		 * Continue the process in the parent loader

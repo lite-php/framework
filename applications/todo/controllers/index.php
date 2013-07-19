@@ -33,14 +33,9 @@ class Index_Controller extends Controller
 	public function index()
 	{
 		/**
-		 * Fetch the todos from the datastore
+		 * Set the dat from the model to the view.
 		 */
-		$todos = $this->model->todos->all('todos');
-
-		/**
-		 * Set the todos to the view
-		 */
-		$this->view->todos = $todos;
+		$this->view->todos = $this->model->todos->all('todos');
 
 		/**
 		 * Render the output
@@ -54,6 +49,11 @@ class Index_Controller extends Controller
 		 * Get the session variable
 		 */
 		$session  = $this->library->session;
+
+		/**
+		 * Set avalue then get the value from the session
+		 */
+		$session->set('test', 'test');
 
 		/**
 		 * Set avalue then get the value from the session

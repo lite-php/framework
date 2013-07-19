@@ -21,7 +21,7 @@ class Session_Config
 	 * You may also specifiy mysql and set the save path to the server.
 	 * @var string
 	 */
-	public $handler = 'native';
+	public $handler = 'memcached';
 
 	/**
 	 * Session name, this is to allow domain specific data.
@@ -48,10 +48,23 @@ class Session_Config
 	public $delete_old_session = true;
 
 	/**
-	 * Session Save Path
+	 * Session save path
 	 * @var string
 	 */
 	public $savepath = '/tmp';
+
+	/**
+	 * Options
+	 * These are options specific to the handler
+	 */
+	public $opts = array(
+		//Memcached Configuration
+		"persistent_id" => null,
+		"servers" => array(
+			//host => port
+			"127.0.0.1" => 11211
+		)
+	);
 
 	/**
 	 * Cookie Parameters for the session.

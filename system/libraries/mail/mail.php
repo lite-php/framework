@@ -9,15 +9,10 @@
  * @license GPL v3 - GNU Public License v3
  * @version 1.0.0
  */
-!defined('SECURE') && die('Access Forbidden!');
-
-/**
- * Database Class
- * @extends PDO
- */
-class Models
+class Mail_Library
 {
-	/**
-	 * Base model class
-	 */
+	public function __construct()
+	{
+		throw new Exception("Mail library currently not implemented");
+	}
 }

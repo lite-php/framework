@@ -32,6 +32,10 @@ Registry::set('ErrorHandler', ErrorHandler::getInstance());
  */
 require_once('classes/http/input.php');
 require_once('classes/http/output.php');
+
+/**
+ * Load the loader layer
+ */
 require_once('classes/loaders/base.php');
 require_once('classes/loaders/model.php');
 require_once('classes/loaders/library.php');
