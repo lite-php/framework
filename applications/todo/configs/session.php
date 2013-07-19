@@ -17,11 +17,13 @@
 class Session_Config
 {
 	/**
-	 * What handler do we use to track the records choose from native, file, redis, memcache or database
-	 * You may also specifiy mysql and set the save path to the server.
+	 * The driver handler specifies the storage method used for sessions
+	 * Possible options are
+	 * * native:     This simulates PHP's defualt storage mechanism
+	 * * memcached:  The stores data on a Memcached server (requires php5-memcached, memcached and $opts values)
 	 * @var string
 	 */
-	public $handler = 'memcached';
+	public $handler = 'native';
 
 	/**
 	 * Session name, this is to allow domain specific data.
@@ -54,14 +56,11 @@ class Session_Config
 	public $savepath = '/tmp';
 
 	/**
-	 * Options
-	 * These are options specific to the handler
+	 * Specific memcached options if memcached is selected
 	 */
-	public $opts = array(
-		//Memcached Configuration
+	public $driver_memcached = array(
 		"persistent_id" => null,
 		"servers" => array(
-			//host => port
 			"127.0.0.1" => 11211
 		)
 	);

@@ -35,27 +35,19 @@ class Session_Library_Driver_Memcached extends Memcached implements SessionHandl
 		/**
 		 * Fetch the configuration class
 		 */
-		$this->config = Registry::get('ConfigLoader')->session;
+		$this->config = Registry::get('ConfigLoader')->session->driver_memcached;
 
 		/**
 		 * Construct the parent object with the persistent id
 		 */
-		parent::__construct($this->config->opts['persistent_id']);
-
-		/**
-		 * Set the options if there is any
-		 */
-		if(!empty($this->config->opts['options']))
-		{
-		}
+		parent::__construct($this->config['persistent_id']);
 
 		/**
 		 * Check to see if we need to add servers to the scope
 		 */
-		if(!empty($this->config->opts['servers']))
+		if(!empty($this->config['servers']))
 		{
-			$servers = $this->config->opts['servers'];
-			foreach ($servers as $host => $port)
+			foreach ($this->config['servers'] as $host => $port)
 			{
 				$this->addServer($host, $port);
 			}
