@@ -1,0 +1,15 @@
+#
+# Ignored files and directories
+#
+
+# Generic Ignores
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+#Lite PHP
+.settings/
+.project
+.buildpath
