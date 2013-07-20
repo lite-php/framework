@@ -1,0 +1,3 @@
+[submodule "system/libraries/session"]
+	path = system/libraries/session
+	url = git@github.com:robertpitt/litephp-session.git
