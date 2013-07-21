@@ -11,6 +11,8 @@
  */
 !defined('SECURE') && die('Access Forbidden!');
 
+class Ab£{}
+
 /**
  * Route Class
  */
@@ -27,6 +29,12 @@ class Route
 	 * @type HTTPOutput Output interface
 	 */
 	public $output;
+
+	/**
+	 * Regular Expression to validate class and function names.
+	 * @var string Regular Expression validate both class name and method names.
+	 */
+	public $construct_regex = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
 
 	/**
 	 * Controller Value
@@ -88,7 +96,16 @@ class Route
 		if(!empty($segments[0]))
 		{
 			/**
-			 * We should validate charactors here
+			 * Validate that the class name is valid, this also prevents directory traversal.
+			 */
+			if(!preg_match($this->construct_regex, $segments[0]))
+			{
+				throw new Exception("Invalid charators detecting in the route.");
+			}
+
+			/**
+			 * Set the controller value
+			 * @var string
 			 */
 			$this->controller = $segments[0];
 
@@ -98,12 +115,21 @@ class Route
 			if(!empty($segments[1]))
 			{
 				/**
-				 * Again, we should validate chars but also varifiy against magic methods.
+				 * Validate that the method name is valid, this also prevents directory traversal.
+				 */
+				if(!preg_match($this->construct_regex, $segments[0]))
+				{
+					throw new Exception("Invalid charators detecting in the route.");
+				}
+
+				/**
+				 * Set the method name to the local scope
+				 * @var string
 				 */
 				$this->method = $segments[1];
 
 				/**
-				 * We now can slice hte
+				 * Slice the rest of hte arguments and set them as arguments for route.
 				 */
 				if(count($segments) > 2)
 				{

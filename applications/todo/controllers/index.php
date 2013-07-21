@@ -60,4 +60,37 @@ class Index_Controller extends Controller
 		 */
 		echo $session->get('test');
 	}
+
+	public function mailtest()
+	{
+		/**
+		 * Load the simple mail library
+		 */
+		$mail = $this->library->simplemail;
+
+		/**
+		 * For the test email we send the todo.sqlite database
+		 */
+		$attachment = $this->application->getResourceLocation(null, 'todo', 'sqlite');
+
+		/**
+		 * Configure a test email
+		 */
+		$sent = $mail
+			->setTo('robertpitt1988@gmail.com', 'Robert Pitt')
+			->setSubject('This is a sample email from simple mail')
+			->setFrom('robert@localhost', 'localhost')
+			->addMailHeader('Reply-To', 'robert@localhost', 'localhost')
+			->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
+			->setMessage('<strong>This is a sample email from simple mail</strong>')
+			->addAttachment($attachment)
+			->setWrap(100)
+			->send();
+
+		/**
+		 * Validate that the email was sent
+		 */
+		echo $sent ? "Email sent" : "Unable to send email.";
+		echo $mail->debug();
+	}
 }

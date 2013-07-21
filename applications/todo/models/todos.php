@@ -26,10 +26,11 @@ class Todos_Model extends Model
 	public function create($description, $completed)
 	{
 		/**
-		 * Return the insert value
+		 * Return the insert value from the parent Model
 		 */
 		return $this->insert("todos", array(
-			"description" => $description, "completed" => $completed
+			"description" => $description,
+			"completed"   => $completed
 		));
 	}
 }

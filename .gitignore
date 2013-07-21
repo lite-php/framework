@@ -9,7 +9,7 @@
 *.swp
 *.out
 
-#Lite PHP
+#Lite PHPs
 .settings/
 .project
 .buildpath

@@ -19,12 +19,13 @@ abstract class Registry
 	/**
 	 * Used for storing instantiated objects passed in via Registry::set
 	 * @see Registry::set
-	 * @type Array Entity Store
+	 * @var Array
 	 */
 	public static $_registry = array();
 
 	/**
 	 * Sets an entity to the store
+	 * @return [type] [description]
 	 */
 	public static function set($key, $entity)
 	{

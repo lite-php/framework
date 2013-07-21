@@ -21,17 +21,11 @@ define('SECURE', true);
 require_once('system/framework.php');
 
 /**
- * Fetch the Application Object out of the registry.
- * @var Application
- */
-$Application = Registry::get('Application');
-
-/**
  * Set the application path
  */
-$Application->setApplicationPath(__DIR__ . '/applications/todo');
+Registry::get('Application')->setApplicationPath(__DIR__ . '/applications/todo');
 
 /**
  * Run the applciation
  */
-$Application->run();
+Registry::get('Application')->run();

@@ -47,7 +47,7 @@
 !defined('CURRENT_USER') && define('CURRENT_USER', get_current_user());
 
 /**
- * Define true if we are runnning opn php4
+ * Define true if we are runnning on a sapi enviroment
  */
 !defined('IS_CLI') && define('IS_CLI', php_sapi_name() == 'cli');
 

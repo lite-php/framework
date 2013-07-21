@@ -21,6 +21,8 @@ class Session_Config
 	 * Possible options are
 	 * * native:     This simulates PHP's defualt storage mechanism
 	 * * memcached:  The stores data on a Memcached server (requires php5-memcached, memcached and $opts values)
+	 * * database:   Stores the sessions in a database.. @todo
+	 * * redis:      Stores the sessions in redis.. @todo
 	 * @var string
 	 */
 	public $handler = 'native';
