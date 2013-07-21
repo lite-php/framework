@@ -28,10 +28,22 @@ require_once('classes/errors/handler.php');
 Registry::set('ErrorHandler', ErrorHandler::getInstance());
 
 /**
- * Require HTTP Interfaces and Loaders
+ * If we are currently in the CLI Enviroment, load the cli bootstrap
  */
-require_once('classes/http/input.php');
-require_once('classes/http/output.php');
+if(IS_CLI) {
+	require_once('classes/cli/bootstrap.php');
+}
+
+/**
+ * Require HTTP Interfaces and Loaders if we are not in CLI Mode
+ */
+if(!IS_CLI)
+{
+	require_once('classes/http/input.php');
+	require_once('classes/http/output.php');
+	Registry::set('Input',		new HTTPInput());
+	Registry::set('Output',		new HTTPOutput());
+}
 
 /**
  * Load the loader layer
@@ -69,7 +81,5 @@ Registry::set('Model',			new Model());
 Registry::set('Modelloader',	new ModelLoader());
 Registry::set('Libraryloader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
-Registry::set('HTTPInput',		new HTTPInput());
-Registry::set('HTTPOutput',		new HTTPOutput());
 Registry::set('Route',			new Route());
 Registry::set('Application',	new Application());

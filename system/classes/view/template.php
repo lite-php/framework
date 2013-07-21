@@ -72,7 +72,7 @@ class Template
 		/**
 		 * Send this data to the output class
 		 */
-		Registry::get('HTTPOutput')->send($content);
+		Registry::get('Output')->send($content);
 	}
 
 	/**

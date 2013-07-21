@@ -60,7 +60,7 @@ class View
 		/**
 		 * Get the application
 		 */
-		$Output = Registry::get('HTTPOutput');
+		$Output = Registry::get('Output');
 
 		/**
 		 * Check to see if the template exists

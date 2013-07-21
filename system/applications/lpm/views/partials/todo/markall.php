@@ -1,0 +1,1 @@
+<button class="btn btn-primary" style="float:right;margin:5px">Mark all as completed</button>

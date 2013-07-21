@@ -47,6 +47,11 @@
 !defined('CURRENT_USER') && define('CURRENT_USER', get_current_user());
 
 /**
+ * Check for windows enviroment
+ */
+!defined('IS_WIN') && define('IS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+
+/**
  * Define true if we are runnning on a sapi enviroment
  */
 !defined('IS_CLI') && define('IS_CLI', php_sapi_name() == 'cli');

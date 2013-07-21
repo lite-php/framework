@@ -71,6 +71,23 @@ class ErrorHandler
 	public function handleException(Exception $e)
 	{
 		/**
+		 * If we are within the CLI, just output the error message
+		 */
+		if(IS_CLI)
+		{
+			$output = Registry::get('Output');
+			$output->send("Error: Message: " . $e->getMessage());
+			$output->send("Error: File:    " . $e->getFile());
+			$output->send("Error: Line:    " . $e->getLine());
+
+			foreach ($e->getTrace()	as $trace)
+			{
+
+			}
+
+			return;
+		}
+		/**
 		 * Check to see if we can dispose this error
 		 */
 		

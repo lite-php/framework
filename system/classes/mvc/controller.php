@@ -30,11 +30,11 @@ class Controller
 			break;
 
 			case 'input':
-				return Registry::get('HTTPInput');
+				return Registry::get('Input');
 			break;
 
 			case 'output':
-				return Registry::get('HTTPOutput');
+				return Registry::get('Output');
 			break;
 
 			case 'view':

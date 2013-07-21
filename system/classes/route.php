@@ -57,15 +57,23 @@ class Route
 	 */
 	public function __construct()
 	{
+		if(IS_CLI)
+		{
+			/**
+			 * Configure route for a CLI Application
+			 */
+			$this->_parse_cli();
+			return;
+		}
 		/**
 		 * Fetch the input object from the registry
 		 */
-		$this->input = Registry::get('HTTPInput');
+		$this->input = Registry::get('Input');
 		
 		/**
 		 * Fetch the output object from the registry
 		 */
-		$this->output = Registry::get('HTTPOutput');
+		$this->output = Registry::get('Output');
 
 		/**
 		 * Detect the route from the input
@@ -136,6 +144,37 @@ class Route
 					$this->arguments = array_slice($segments, 2);
 				}
 			}
+		}
+	}
+
+	public function _parse_cli()
+	{
+		/**
+		 * Get the CLIParser object from the registry
+		 */
+		$parser = Registry::get("CLIParser");
+
+		/**
+		 * First argument is the controller
+		 */
+		if($parser->getArgument(0))
+		{
+			$this->controller = $parser->getArgument(0);
+
+			/**
+			 * Method
+			 */
+			if($parser->getArgument(1))
+			{
+				$this->method = $parser->getArgument(1);
+			}
+
+			/**
+			 * Get a clone fo the arguments to pass to to the handler
+			 * With the cli its hard to have control over the argument order
+			 * so we wass teh assoc array to the first argument.
+			 */
+			$this->arguments[] = array_slice($parser->getArguments(), 2);
 		}
 	}
 
