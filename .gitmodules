@@ -1,6 +1,6 @@
 [submodule "system/libraries/session"]
 	path = system/libraries/session
-	url = git@github.com:robertpitt/litephp-session.git
+	url = git remote add origin git@github.com:lite-php/session-library.git
 [submodule "system/libraries/simplemail"]
 	path = system/libraries/simplemail
-	url = git@github.com:robertpitt/litephp-mail.git
+	url = git remote add origin git@github.com:lite-php/simplemail-library.git
