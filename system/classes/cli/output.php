@@ -52,6 +52,11 @@ class CLIOutput
 		 * Connect to the stream
 		 */
 		$this->stderr = fopen('php://stderr', 'w');
+
+		/**
+		 * Set the default prompt
+		 */
+		$this->setPrompt(CURRENT_USER . "@" . VERSION . "> ");
 	}
 
 	/**
@@ -67,7 +72,7 @@ class CLIOutput
 	 */
 	public function send($data, $newline = true)
 	{
-		$this->write($this->stdout, ($newline ? $this->prompt : '') . $data . ($newline ? $this->newline : ''));
+		$this->write($this->stdout, $this->prompt . $data . ($newline ? $this->newline : ''));
 	}
 
 	public function error($data, $newline = true)

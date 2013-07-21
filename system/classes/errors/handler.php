@@ -82,7 +82,7 @@ class ErrorHandler
 
 			foreach ($e->getTrace()	as $trace)
 			{
-
+				var_dump($trace);
 			}
 
 			return;

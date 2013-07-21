@@ -12,13 +12,8 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
- * Session Configuration
+ * Database Configuration
  */
-class reCAPTCHA_Config
+class LPM_Config
 {
-	/**
-	 * POublic authorization key for reCAPTCHA
-	 * @var string
-	 */
-	public $public_key = '6Lek-OQSAAAAAMe2Yk-aUrWf5EezNpzwoXPbz7TO';
 }

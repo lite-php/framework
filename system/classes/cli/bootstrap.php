@@ -28,7 +28,7 @@ require('output.php');
 Registry::set("CLIParser", new CLIParser());
 
 /**
- * Instantiate the I/O
+ * Instantiate the I/O classes
  */
-Registry::set("Input", new CLIInput());
 Registry::set("Output", new CLIOutput());
+Registry::set("Input", new CLIInput());
