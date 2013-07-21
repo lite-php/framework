@@ -84,7 +84,7 @@ class BaseLoader
 		/**
 		 * Attempt to lookup the file location
 		 */
-		$filelocation = $this->lookup($filename);
+		$filelocation = $this->lookup($key);
 
 		/**
 		 * Compile the class name
@@ -127,8 +127,13 @@ class BaseLoader
 		return $this->get($key);
 	}
 
-	public function lookup($file)
+	public function lookup($key)
 	{
+		/**
+		 * Compile the file name
+		 */
+		$filename = $this->getProcessedFilename($key);
+
 		/**
 		 * Attempt to discover the location of file
 		 */
@@ -137,7 +142,7 @@ class BaseLoader
 			/**
 			 * Create a pointer to the current file
 			 */
-			$file = $basepath . '/' . $file;
+			$file = $basepath . '/' . $filename;
 
 			/**
 			 * If it exists, return the path
@@ -154,33 +159,9 @@ class BaseLoader
 	/**
 	 * Checks to see if a file exists
 	 */
-	protected function exists($key)
+	public function exists($key)
 	{
-		if(empty($this->base))
-		{
-			throw new Exception("a searchable path must be set by the parent object");
-		}
-
-		/**
-		 * Compile the file name
-		 */
-		$filename = $this->getProcessedFilename($key);
-
-		/**
-		 * Loop the base paths
-		 */
-		foreach ($this->base as $path)
-		{
-			/**
-			 * If it exists, return true
-			 */
-			if(file_exists($path . '/' . $filename))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return $this->lookup($key) !== false;
 	}
 
 	/**

@@ -4,3 +4,6 @@
 [submodule "system/libraries/simplemail"]
 	path = system/libraries/simplemail
 	url = https://github.com/lite-php/simplemail-library.git
+[submodule "system/libraries/recaptcha"]
+	path = system/libraries/recaptcha
+	url = https://github.com/lite-php/recaptcha-library
