@@ -28,22 +28,10 @@ require_once('classes/errors/handler.php');
 Registry::set('ErrorHandler', ErrorHandler::getInstance());
 
 /**
- * If we are currently in the CLI Enviroment, load the cli bootstrap
+ * Load the enviroment IO Classes.
  */
-if(IS_CLI) {
-	require_once('classes/cli/bootstrap.php');
-}
+require_once('classes/' . (IS_CLI ? 'cli' : 'http') . '/bootstrap.php');
 
-/**
- * Require HTTP Interfaces and Loaders if we are not in CLI Mode
- */
-if(!IS_CLI)
-{
-	require_once('classes/http/input.php');
-	require_once('classes/http/output.php');
-	Registry::set('Input',		new HTTPInput());
-	Registry::set('Output',		new HTTPOutput());
-}
 
 /**
  * Load the loader layer
