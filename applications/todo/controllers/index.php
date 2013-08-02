@@ -77,7 +77,7 @@ class Index_Controller extends Controller
 		 * Configure a test email
 		 */
 		$sent = $mail
-			->setTo('robertpitt1988@gmail.com', 'Robert Pitt')
+			->setTo('robert@localhost', 'Robert Pitt')
 			->setSubject('This is a sample email from simple mail')
 			->setFrom('robert@localhost', 'localhost')
 			->addMailHeader('Reply-To', 'robert@localhost', 'localhost')
@@ -92,5 +92,15 @@ class Index_Controller extends Controller
 		 */
 		echo $sent ? "Email sent" : "Unable to send email.";
 		echo $mail->debug();
+	}
+
+	public function recaptcha()
+	{
+		/**
+		 * Load the library
+		 */
+		$recaptcha = $this->library->recaptcha;
+
+		echo $recaptcha->generate();
 	}
 }
