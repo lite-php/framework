@@ -17,18 +17,19 @@ class Ajax_Controller extends Controller
 	public function __construct()
 	{
 		/**
-		 * Validate we have a XHR Request with header.
+		 * Validate we have a XHR Request.
 		 */
-		if(!$this->input->isAjax())
+		if(!$this->input->isAjaxRequest())
 		{
 			/**
 			 * Send a 404 and exit
 			 */
+			throw new Exception("Invalid request method.");
 		}
 	}
 
 	/**
-	 * Create / isnert a new todo in the database
+	 * Create / insert a new todo in the database
 	 */
 	public function create()
 	{
@@ -51,6 +52,9 @@ class Ajax_Controller extends Controller
 		 */
 		$id = $this->model->todos->create($description, 0);
 
+		/**
+		 * If we was unable to create the row, send an error back to the client.
+		 */
 		if($id === false)
 		{
 			$this->output->sendJSON(array("error" => 'Unable to save to database', "msg" => $this->model->todos->errorInfo()));
@@ -58,7 +62,7 @@ class Ajax_Controller extends Controller
 		}
 
 		/**
-		 * Successful insert, send back the ID
+		 * Send back the new row we had created.
 		 */
 		$this->output->sendJSON(array(
 			"id" => $id,

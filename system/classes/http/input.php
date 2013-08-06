@@ -13,11 +13,15 @@
 
 /**
  * HTTP Input Class
+ *
+ * This class tries to encapsulates all the input components of the PHP, this inlcudes
+ * User Input, Browser Input such as Cokies, 
  */
 class HTTPInput
 {
 	/**
 	 * Envoroment keys in order of lookup to determain the clients ip.
+	 * @see http://stackoverflow.com/a/3003233/353790
 	 * @var array
 	 */
 	private $_ip_search = array(
@@ -54,37 +58,19 @@ class HTTPInput
 	}
 
 	/**
-	 * Check to see if there has been a POST request
-	 * @return boolean
+	 * Return the request method for this request
+	 * @return string Uppercase version of the the request method.
 	 */
-	public function isHead()
+	public function getRequestMethod()
 	{
-		return $_SERVER['REQUEST_METHOD'] == 'HEAD';
+		return $_SERVER['REQUEST_METHOD'];
 	}
 
 	/**
-	 * Check to see if there has been a POST request
+	 * A simple check to see if the request is an XHR Request
 	 * @return boolean
 	 */
-	public function isPost()
-	{
-		return $_SERVER['REQUEST_METHOD'] == 'POST';
-	}
-
-	/**
-	 * Check to see if there has been a POST request
-	 * @return boolean
-	 */
-	public function isPut()
-	{
-		return $_SERVER['REQUEST_METHOD'] == 'PUT';
-	}
-
-	/**
-	 * Check to see if the request was an ajax request
-	 * @return boolean
-	 */
-	public function isAjax()
+	public function isAjaxRequest()
 	{
 		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 	}
@@ -129,31 +115,6 @@ class HTTPInput
 	}
 
 	/**
-	 * Returns the IP for the current requester
-	 */
-	public function ip()
-	{
-		return $this->ip;
-	}
-
-	/**
-	 * Returns the time the request hit the server
-	 * @return flaot
-	 */
-	public function requestTimeFloat()
-	{
-		return $_SERVER['REQUEST_TIME'];
-	}
-
-	/**
-	 * Return the request URI
-	 */
-	public function getScriptName()
-	{
-		return$_SERVER['SCRIPT_NAME'];
-	}
-
-	/**
 	 * Return the request URI
 	 */
 	public function getRequestURI()
@@ -167,5 +128,14 @@ class HTTPInput
 	public function getQueryString()
 	{
 		return $_SERVER['QUERY_STRING'];
+	}
+
+	/**
+	 * Returns the IP for the current requester
+	 * @return string Best matched IP Address for the current request.
+	 */
+	public function ip()
+	{
+		return $this->ip;
 	}
 }

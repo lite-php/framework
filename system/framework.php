@@ -34,7 +34,8 @@ require_once('classes/' . (IS_CLI ? 'cli' : 'http') . '/bootstrap.php');
 
 
 /**
- * Load the loader layer
+ * Load the base loader and sub loaders for autoloading
+ * configurations, models and libraries.
  */
 require_once('classes/loaders/base.php');
 require_once('classes/loaders/model.php');
@@ -42,7 +43,8 @@ require_once('classes/loaders/library.php');
 require_once('classes/loaders/config.php');
 
 /**
- * Require Database libraries
+ * Require the database layer, this needs to be abstracted to a library
+ * but need to think about the Database Model Base.
  */
 require_once('classes/database/database.php');
 
@@ -71,3 +73,9 @@ Registry::set('Libraryloader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
 Registry::set('Route',			new Route());
 Registry::set('Application',	new Application());
+
+/**
+ * Define a constant to allow for profiling the boot time of the system
+ */
+define('SYSTEM_BOOT_TIME', microtime(true) - SYSTEM_START_TIME);
+define('APPLICATION_START_TIME', microtime(true));

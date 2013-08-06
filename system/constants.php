@@ -29,12 +29,7 @@
 /**
  * Start time
  */
-!defined('START_TIME') && define('START_TIME', time());
-
-/**
- * Start microtime
- */
-!defined('START_MTIME') && define('START_MTIME', microtime());
+!defined('SYSTEM_START_TIME') && define('SYSTEM_START_TIME', microtime(true));
 
 /**
  * Get the memory usage as early on as possible

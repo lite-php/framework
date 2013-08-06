@@ -24,7 +24,7 @@ class Index_Controller extends Controller
 		/**
 		 * Set the javascripts for the view
 		 */
-		$this->view->scripts = array("jquery.min", "bootstrap.min", 'app');
+		$this->view->scripts = array("jquery.min", "bootstrap.min", 'todo');
 	}
 
 	/**

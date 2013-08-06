@@ -62,6 +62,7 @@ class Model extends Database
 
 	/**
 	 * Selects a set of rows from a table
+	 * @todo Implement
 	 * @param  string  $table Table to perform the select on
 	 * @param  array   $where where filter
 	 * @param  array   $joins cross joins
@@ -79,6 +80,7 @@ class Model extends Database
 
 	/**
 	 * Update a table with a set of key/values and a possible where clause
+	 * @todo Implement
 	 * @param  string $table  tablwe to be effected
 	 * @param  array  $values key/value pairs to be persisted
 	 * @param  array  $where  string key/value pairs to be used to limit the modifications.
@@ -90,6 +92,7 @@ class Model extends Database
 
 	/**
 	 * Removes one or more rows from a table given the where clauses filter
+	 * @todo Implement
 	 * @param  string $table table to be effected
 	 * @param  array  $where Where filter to be placed in the query
 	 * @return boolean       returns true if the statement executed successfully
