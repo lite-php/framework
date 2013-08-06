@@ -7,3 +7,6 @@
 [submodule "system/libraries/recaptcha"]
 	path = system/libraries/recaptcha
 	url = https://github.com/lite-php/recaptcha-library
+[submodule "system/libraries/sorter"]
+	path = system/libraries/sorter
+	url = https://github.com/lite-php/sorting-library.git
