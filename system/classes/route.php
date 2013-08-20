@@ -90,12 +90,17 @@ class Route
 		/**
 		 * Fetch the query string from the request
 		 */
-		$query = $this->input->getQueryString();
+		$uri = $this->input->getRequesturi();
+
+		/**
+		 * We are only interested in the path
+		 */
+		$path = explode("?", $uri);
 
 		/**
 		 * Parse the query string
 		 */
-		$segments = explode('/', trim($query, '/'));
+		$segments = explode('/', trim($path[0], '/'));
 
 		/**
 		 * Parse the route
