@@ -76,6 +76,13 @@ class Application
 		}
 
 		/**
+		 * If we are able to load the vendor bootstrap then do that now.
+		 */
+		if(file_exists($this->getResourceLocation("vendor", "autoload", "php"))) {
+			require_once $this->getResourceLocation("vendor", "autoload", "php");
+		}
+
+		/**
 		 * Load the controller
 		 */
 		require_once $this->getControllerPath($route->getController());
