@@ -98,7 +98,7 @@ class HTTPInput
 		/**
 		 * Return the get variable
 		 */
-		return !empty($_GET) && isset($_POST[$key]) ? $_GET[$key] : null;
+		return isset($_GET[$key]) ? $_GET[$key] : null;
 	}
 
 	/**
