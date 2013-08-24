@@ -90,11 +90,6 @@ class Database extends PDO
 	public function commit()
 	{
 		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
-		/**
 		 * Call the parent method
 		 */
 		return parent::commit();
@@ -106,11 +101,6 @@ class Database extends PDO
 	 */
 	public function errorCode()
 	{
-		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
 		/**
 		 * Call the parent method
 		 */
@@ -124,11 +114,6 @@ class Database extends PDO
 	 */
 	public function errorInfo()
 	{
-		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
 		/**
 		 * Call the parent method
 		 */
@@ -161,11 +146,6 @@ class Database extends PDO
 	public function getAttribute($attribute)
 	{
 		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
-		/**
 		 * Call the parent method
 		 */
 		return parent::getAttribute($attribute);
@@ -190,11 +170,6 @@ class Database extends PDO
 	public function inTransaction()
 	{
 		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
-		/**
 		 * Call the parent method
 		 */
 		return parent::inTransaction();
@@ -207,11 +182,6 @@ class Database extends PDO
 	 */
 	public function lastInsertId($name = null)
 	{
-		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
 		/**
 		 * Call the parent method
 		 */
@@ -283,11 +253,6 @@ class Database extends PDO
 	public function rollBack()
 	{
 		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
-		/**
 		 * Call the parent method
 		 */
 		return parent::rollBack();
@@ -301,11 +266,6 @@ class Database extends PDO
 	 */
 	public function setAttribute($attribute, $value)
 	{
-		/**
-		 * Assure we are connected
-		 */
-		$this->connect();
-
 		/**
 		 * Call the parent method
 		 */
