@@ -136,4 +136,22 @@ class Template
 	{
 		return BASE_URL . '/' . ltrim($path, '/');
 	}
+
+	/**
+	 * Helper to detect the controller/action on the current page
+	 */
+	public function isRoute($controller, $method = false)
+	{
+		$Route = Registry::get('Route');
+
+		/**
+		 * Validate controller only
+		 */
+		if($method == false)
+		{
+			return $Route->getController() == $controller;
+		}
+
+		return $Route->getController() == $controller && $Route->getmethod() == $method;
+	}
 }

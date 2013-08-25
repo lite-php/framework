@@ -70,9 +70,18 @@ class HTTPInput
 	 * A simple check to see if the request is an XHR Request
 	 * @return boolean
 	 */
-	public function isAjaxRequest()
+	public function isAjax()
 	{
 		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+	}
+
+	/**
+	 * Detect if a form has been submitted to this page.
+	 * @return boolean if there has been a post request.
+	 */
+	public function isPost()
+	{
+		return $this->getRequestMethod() == 'POST';
 	}
 
 	/**
