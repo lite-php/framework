@@ -10,3 +10,6 @@
 [submodule "system/libraries/sorter"]
 	path = system/libraries/sorter
 	url = https://github.com/lite-php/sorting-library.git
+[submodule "system/libraries/bcrypt"]
+	path = system/libraries/bcrypt
+	url = https://github.com/lite-php/bcrypt-library.git
