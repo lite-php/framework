@@ -136,13 +136,4 @@ class Template
 	{
 		return BASE_URL . '/' . ltrim($path, '/');
 	}
-
-	/**
-	 * Prints out a string encapsulated within an HTML strong tag.
-	 * @param  string $string
-	 */
-	public function bold($string)
-	{
-		echo '<strong>'. $string .'<strong>';
-	}
 }

@@ -50,11 +50,6 @@ class Database extends PDO
 		 * Call the parent constructor
 		 */
 		parent::__construct($config->dsn, $config->username, $config->password, $config->driver_options);
-
-		/**
-		 * Set the attributes parent
-		 */
-		parent::setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 	}
 
 	/**
@@ -266,6 +261,7 @@ class Database extends PDO
 	 */
 	public function setAttribute($attribute, $value)
 	{
+		$this->connect();
 		/**
 		 * Call the parent method
 		 */
