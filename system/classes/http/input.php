@@ -86,7 +86,7 @@ class HTTPInput
 
 	/**
 	 * Return the request URI
-	 * @return string ther current requested uri
+	 * @return string|null 	the current requested URI
 	 */
 	public function getRequestURI()
 	{
@@ -95,7 +95,7 @@ class HTTPInput
 
 	/**
 	 * Return the request URI
-	 * @return string the current query string
+	 * @return string|null 	the current query string
 	 */
 	public function getQueryString()
 	{
@@ -106,7 +106,7 @@ class HTTPInput
 	 * Retrive a value passed in the get params
 	 * @param  string $key
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
-	 * @return string
+	 * @return string|null
 	 */
 	public function get($key, $filters = FILTER_DEFAULT)
 	{
@@ -119,7 +119,7 @@ class HTTPInput
 	/**
 	 * Retrive a value passed in the post params
 	 * @param  string $key
-	 * @return string
+	 * @return string|null
 	 */
 	public function post($key, $filters = FILTER_DEFAULT)
 	{
@@ -133,7 +133,7 @@ class HTTPInput
 	 * Retrive a value passed in the cookie header
 	 * @param  string 	$key
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
-	 * @return string
+	 * @return string|null
 	 */
 	public function cookie($key, $filters = FILTER_DEFAULT)
 	{
@@ -147,21 +147,21 @@ class HTTPInput
 	 * Retrive a value from the server object
 	 * @param  string 	$key
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
-	 * @return string
+	 * @return string|null
 	 */
 	public function server($key, $filters = FILTER_DEFAULT)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return $this->_filtered_input(INPUT_SERVER, $key, $filters | FILTER_NULL_ON_FAILURE);
+		return $this->_filtered_input(INPUT_SERVER, $key, $filters);
 	}
 
 	/**
 	 * Retrive a enviroment value
 	 * @param  string 	$key
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
-	 * @return string
+	 * @return string|null
 	 */
 	public function env($key, $filters = FILTER_DEFAULT)
 	{
@@ -178,7 +178,7 @@ class HTTPInput
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return *        Fitlered input, null if not found.
 	 */
-	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT, $options)
+	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT, $options = array())
 	{
 		return filter_input($type, $key, $filters);
 	}
@@ -190,5 +190,24 @@ class HTTPInput
 	public function ip()
 	{
 		return $this->ip;
+	}
+
+	/**
+	 * Checks to see if the current connecton is secure (SSL)
+	 * @return boolean whether the connection is secure.
+	 */
+	public function isSecure()
+	{
+		return (!empty($_SERVER['HTTPS']) && $this->server('HTTPS') !== 'off')
+			|| $this->server('SERVER_PORT', FILTER_VALIDATE_INT) == 443;
+	}
+
+	/**
+	 * Returns true|false depending on if the connection is local.
+	 * @return boolean true|false
+	 */
+	public function isLocal()
+	{
+		return !$this->_filtered_input($this->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);
 	}
 }
