@@ -85,7 +85,39 @@ class HTTPInput
 	}
 
 	/**
-	 * Retrieve a variable that has been psased by the post method
+	 * Return the request URI
+	 * @return string ther current requested uri
+	 */
+	public function getRequestURI()
+	{
+		return $this->server('REQUEST_URI');
+	}
+
+	/**
+	 * Return the request URI
+	 * @return string the current query string
+	 */
+	public function getQueryString()
+	{
+		return $this->server('QUERY_STRING');
+	}
+
+	/**
+	 * Retrive a value passed in the get params
+	 * @param  string $key
+	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
+	 * @return string
+	 */
+	public function get($key, $filters = FILTER_DEFAULT)
+	{
+		/**
+		 * Return the get variable
+		 */
+		return $this->_filtered_input(INPUT_GET, $key, $filters);
+	}
+
+	/**
+	 * Retrive a value passed in the post params
 	 * @param  string $key
 	 * @return string
 	 */
@@ -98,23 +130,9 @@ class HTTPInput
 	}
 
 	/**
-	 * Retrive a variable passed in the get params
-	 * @param  string $key
-	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
-	 * @return string
-	 */
-	public function get($key, $filters = FILTER_DEFAULT)
-	{
-		/**
-		 * Return the get variable
-		 */
-		return $this->_filtered_input(INPUT_GET, $key, $filters);
-	}
-
-	/**
-	 * Retrive a cookie value passed via the header
-	 * @param string 	$key
-	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
+	 * Retrive a value passed in the cookie header
+	 * @param  string 	$key
+	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string
 	 */
 	public function cookie($key, $filters = FILTER_DEFAULT)
@@ -126,9 +144,9 @@ class HTTPInput
 	}
 
 	/**
-	 * Retrive a server value
-	 * @param  string $key
-	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
+	 * Retrive a value from the server object
+	 * @param  string 	$key
+	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string
 	 */
 	public function server($key, $filters = FILTER_DEFAULT)
@@ -141,8 +159,8 @@ class HTTPInput
 
 	/**
 	 * Retrive a enviroment value
-	 * @param  string $key
-	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
+	 * @param  string 	$key
+	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string
 	 */
 	public function env($key, $filters = FILTER_DEFAULT)
@@ -160,30 +178,14 @@ class HTTPInput
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return *        Fitlered input, null if not found.
 	 */
-	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT)
+	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT, $options)
 	{
 		return filter_input($type, $key, $filters);
 	}
 
 	/**
-	 * Return the request URI
-	 */
-	public function getRequestURI()
-	{
-		return $_SERVER['REQUEST_URI'];
-	}
-
-	/**
-	 * Return the request URI
-	 */
-	public function getQueryString()
-	{
-		return $_SERVER['QUERY_STRING'];
-	}
-
-	/**
 	 * Returns the IP for the current requester
-	 * @return string Best matched IP Address for the current request.
+	 * @return string Ip address that made this request, even behind proxies.
 	 */
 	public function ip()
 	{
