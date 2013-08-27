@@ -97,19 +97,32 @@ class HTTPOutput
 		 */
 		echo $data;
 	}
+
+	/**
+	 * Check to see if the headers have been sent
+	 * @return bool true|false depening on if the headers are sent.
+	 */
+	public function headersSent()
+	{
+		return headers_sent();
+	}
+
 	/**
 	 * Send the headers if headers have not already been sent
 	 * @return boolean
 	 */
 	public function sendHeaders()
 	{
-		if(!headers_sent())
+		if(!$this->headersSent())
 		{
-			foreach ($this->headers as $key => $value) {
+			foreach ($this->headers as $key => $value)
+			{
 				header($key . ': ' . $value);
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -143,5 +156,33 @@ class HTTPOutput
 	public function getHeader($key)
 	{
 		return $this->headers[$key];
+	}
+
+	/**
+	 * Redirect method
+	 */
+	public function redirect($location, $terminate = true)
+	{
+		/**
+		 * If the headers are sent, we need to throw an exception
+		 */
+		if($this->headersSent())
+		{
+			throw new Exception("Cannot redirect, headers are already sent.");
+		}
+
+		/**
+		 * Add the header
+		 */
+		$this->setHeader('Location', $location);
+
+		/**
+		 * Terminate the request if required.
+		 */
+		if($terminate)
+		{
+			$this->send(null);
+			exit;
+		}
 	}
 }
