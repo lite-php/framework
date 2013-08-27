@@ -49,9 +49,9 @@ class HTTPInput
 		 */
 		foreach ($this->_ip_search as $index)
 		{
-			if(getenv($index))
+			if($this->env($index, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
 			{
-				$this->ip = getenv($index);
+				$this->ip = $this->env($index);
 				break;
 			}
 		}
@@ -63,7 +63,7 @@ class HTTPInput
 	 */
 	public function getRequestMethod()
 	{
-		return $_SERVER['REQUEST_METHOD'];
+		return strtoupper($this->server('REQUEST_METHOD'));
 	}
 
 	/**
@@ -72,7 +72,7 @@ class HTTPInput
 	 */
 	public function isAjax()
 	{
-		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+		return strtolower($this->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest';
 	}
 
 	/**
@@ -81,7 +81,7 @@ class HTTPInput
 	 */
 	public function isPost()
 	{
-		return $this->getRequestMethod() == 'POST';
+		return 'POST' === $this->getRequestMethod();
 	}
 
 	/**
@@ -89,38 +89,80 @@ class HTTPInput
 	 * @param  string $key
 	 * @return string
 	 */
-	public function post($key)
+	public function post($key, $filters = FILTER_DEFAULT)
 	{
 		/**
 		 * Return the post value
 		 */
-		return !empty($_POST) && isset($_POST[$key]) ? $_POST[$key] : null;
+		return $this->_filtered_input(INPUT_POST, $key, $filters);
 	}
 
 	/**
 	 * Retrive a variable passed in the get params
 	 * @param  string $key
+	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string
 	 */
-	public function get($key)
+	public function get($key, $filters = FILTER_DEFAULT)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return isset($_GET[$key]) ? $_GET[$key] : null;
+		return $this->_filtered_input(INPUT_GET, $key, $filters);
 	}
 
 	/**
 	 * Retrive a cookie value passed via the header
-	 * @param  string $key
+	 * @param string 	$key
+	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string
 	 */
-	public function cookie($key)
+	public function cookie($key, $filters = FILTER_DEFAULT)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return !empty($_COOKIE) && isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
+		return $this->_filtered_input(INPUT_COOKIE, $key, $filters);
+	}
+
+	/**
+	 * Retrive a server value
+	 * @param  string $key
+	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
+	 * @return string
+	 */
+	public function server($key, $filters = FILTER_DEFAULT)
+	{
+		/**
+		 * Return the get variable
+		 */
+		return $this->_filtered_input(INPUT_SERVER, $key, $filters | FILTER_NULL_ON_FAILURE);
+	}
+
+	/**
+	 * Retrive a enviroment value
+	 * @param  string $key
+	 * @param int 		$filters the bitmask for filers to use, see FILTER_*
+	 * @return string
+	 */
+	public function env($key, $filters = FILTER_DEFAULT)
+	{
+		/**
+		 * Return the get variable
+		 */
+		return $this->_filtered_input(INPUT_ENV, $key, $filters | FILTER_NULL_ON_FAILURE);
+	}
+
+	/**
+	 * Return a fitlered value
+	 * @param  int 		$type  Filter types to search
+	 * @param  string 	$key   key to look for in the input stac
+	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
+	 * @return *        Fitlered input, null if not found.
+	 */
+	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT)
+	{
+		return filter_input($type, $key, $filters);
 	}
 
 	/**
