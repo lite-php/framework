@@ -77,5 +77,5 @@ Registry::set('Application',	new Application());
 /**
  * Define a constant to allow for profiling the boot time of the system
  */
-define('SYSTEM_BOOT_TIME', microtime(true) - SYSTEM_START_TIME);
+define('SYSTEM_BOOT_TIME', number_format((microtime(true) - SYSTEM_START_TIME), 4));
 define('APPLICATION_START_TIME', microtime(true));
