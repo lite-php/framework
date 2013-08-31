@@ -47,14 +47,7 @@ class HTTPInput
 		/**
 		 * Detect the clients IP address
 		 */
-		foreach ($this->_ip_search as $index)
-		{
-			if($this->env($index, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
-			{
-				$this->ip = $this->env($index);
-				break;
-			}
-		}
+		$this->ip = $this->_detectIP();
 	}
 
 	/**
@@ -209,5 +202,16 @@ class HTTPInput
 	public function isLocal()
 	{
 		return !$this->_filtered_input($this->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);
+	}
+
+	private function _detectIP()
+	{
+		foreach ($this->_ip_search as $index)
+		{
+			if($this->env($index, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
+			{
+				return $this->env($index);
+			}
+		}
 	}
 }
