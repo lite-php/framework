@@ -102,6 +102,41 @@ class Model extends Database
 	}
 
 	/**
+	 * Fetch a row by ID
+	 * @param  string $table    Table we are selecting from
+	 * @param  array  $columns  Columns we want to return, it can just be array('*')
+	 * @param  string $idColumn column name for the ID
+	 */
+	public function id($table, $id, $columns = array(), $idColumn = 'id')
+	{
+		/**
+		 * Create a new query
+		 * Should be escaping the columns here
+		 */
+		$sql = "SELECT " . implode(",", $columns) . " FROM " . $table . " WHERE " . $idColumn . " = :id";
+
+		/**
+		 * Create a statement
+		 */
+		$statement = $this->prepare($sql);
+
+		/**
+		 * Bind the id column value
+		 */
+		$statement->bindParam(':id', $id);
+
+		/**
+		 * Execute
+		 */
+		$statement->execute();
+
+		/**
+		 * Return all rows
+		 */
+		return $statement->fetch();
+	}
+
+	/**
 	 * Fetch all from a table
 	 * @param  string $table table to select from
 	 */

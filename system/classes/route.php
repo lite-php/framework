@@ -146,7 +146,7 @@ class Route
 				 */
 				if(count($segments) > 2)
 				{
-					$this->arguments = array_slice($segments, 2);
+					$this->arguments = array_map(array($this, '_decodeParam'), array_slice($segments, 2));
 				}
 			}
 		}
@@ -213,5 +213,15 @@ class Route
 	public function getArgumentsAt($position, $default = null)
 	{
 		return !empty($this->arguments[$position -1]) ? $this->arguments[$position -1] : $default;
+	}
+
+	/**
+	 * Decodes a parameter passed via the query string
+	 * @param  string $param the segment to decode
+	 * @return string        the decoded segment
+	 */
+	private function _decodeParam($param)
+	{
+		return urldecode($param);
 	}
 }

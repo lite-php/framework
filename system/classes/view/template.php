@@ -29,7 +29,7 @@ class Template
 	/**
 	 * We compile here so we don't clog the view's namespace
 	 */
-	public function __construct($__base_path, $__template, $__data)
+	public function __construct($__base_path, $__template, $__data, $callback = false)
 	{
 		/**
 		 * Set the base path
@@ -70,6 +70,15 @@ class Template
 		ob_end_clean();
 
 		/**
+		 * If we are returning we need to return by reference
+		 */
+		if($callback !== false)
+		{
+			$callback($content);
+			return;
+		}
+		
+		/**
 		 * Send this data to the output class
 		 */
 		Registry::get('Output')->send($content);
@@ -93,6 +102,11 @@ class Template
 	public function __isset($param)
 	{
 		return isset($this->__DATA_[$param]);
+	}
+
+	public function encode($data, $mode = ENT_QUOTES, $encoding = "UTF-8")
+	{
+		return htmlentities($data, $mode, $encoding);
 	}
 
 	/**
