@@ -51,7 +51,7 @@ class HTTP_Library
 	 */
 	public function post($url, $query = array(), $data = array(), $headers = array())
 	{
-		return $this->_request($url, 'GET', $query, $data, $headers);
+		return $this->_request($url, 'POST', $query, $data, $headers);
 	}
 
 	/**
@@ -102,13 +102,18 @@ class HTTP_Library
 			/**
 			 * Merge and regenerate teh query string for the url
 			 */
-			$components['query'] = http_build_str(array_merge($origQueryString, $query));
-
-			/**
-			 * Rebuild the new url
-			 */			
-			$url = http_build_url($components);
+			$query = http_build_str(array_merge($origQueryString, $query));
 		}
+
+		/**
+		 * Set the query to the components
+		 */
+		$components['query'] = http_build_query($query);
+
+		/**
+		 * Rebuild the new url
+		 */			
+		$url = http_build_url($components);
 
 		/**
 		 * Create a new curl object for this url
