@@ -65,6 +65,15 @@ class Application
 		$route = Registry::get('Route');
 
 		/**
+		 * Security Check.
+		 * If the route starts with _, dissalow it.
+		 */
+		if(substr($route->getMethod(), 0, 1) == '_')
+		{
+			throw new Exception("Not found!", 404);
+		}
+
+		/**
 		 * See if we have a controller
 		 */
 		if(!$this->controllerExists($route->getController()))
@@ -103,21 +112,64 @@ class Application
 		}
 
 		/**
-		 * Instnatiate the controller
-		 * @var object
+		 * Create a new reflection object
 		 */
-		$controller = new $controllerName();
+		$reflect = new ReflectionClass($controllerName);
+
+		/**
+		 * Validate the class a valid class
+		 */
+		if(!$reflect->isUserDefined() || !$reflect->isInstantiable())
+		{
+			throw new Exception("Not found!", 404);
+		}
 
 		/**
 		 * Check to see if the class has the right method
 		 */
-		if(!method_exists($controller, $route->getMethod()))
+		if($reflect->hasMethod($route->getMethod()) === false)
 		{
 			/**
 			 * Should throw a 404 here
 			 */
 			throw new Exception("Not found!", 404);
 		}
+
+		/**
+		 * Get a reflection method class
+		 * @var ReflectionMethod
+		 */
+		$method = $reflect->getMethod($route->getMethod());
+
+		/**
+		 * Validate the method
+		 */
+		if($method->isConstructor() || !$method->isPublic())
+		{
+			throw new Exception("Not found!", 404);
+		}
+
+		/**
+		 * Loop the paramaters
+		 */
+		foreach ($method->getParameters() as $index => $parameter)
+		{
+			if($route->getArgumentsAt($index + 1) == null && !$parameter->isOptional())
+			{
+				/**
+				 * Send back a 400 bad Request.
+				 * > The request could not be understood by the server due to malformed syntax.
+				 * > The client SHOULD NOT repeat the request without modifications.
+				 */
+				throw new Exception("Bad Request", 400);
+			}
+		}
+
+		/**
+		 * Create a new instance of the controller class
+		 * @var *
+		 */
+		$controller = $reflect->newInstance();
 
 		/**
 		 * Run the method, we may implement a utility here
