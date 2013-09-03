@@ -29,20 +29,20 @@
 				<h3>Description</h3>
 				<p>An error has occrued that prevented this page for displaying</p>
 			</div>
-			<?php if(isset($e)): ?>
+			<?php if(isset($context)): ?>
 			<div class="row">
 				<h3>Exception</h3>
 				<table>
 					<tbody>
-						<tr><td>Message</td><td><?php echo $e->getMessage(); ?></td></tr>
-						<tr><td>Code</td><td><?php echo $e->getCode(); ?></td></tr>
-						<tr><td>File</td><td><?php echo $e->getFile(); ?></td></tr>
+						<tr><td>Message</td><td><?php echo $context->getMessage(); ?></td></tr>
+						<tr><td>Code</td><td><?php echo $context->getCode(); ?></td></tr>
+						<tr><td>File</td><td><?php echo $context->getFile(); ?></td></tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="row">
 				<h3>Stack Trace</h3>
-				<pre><?php echo $e->getTraceAsString(); ?></pre>
+				<pre><?php echo $context->getTraceAsString(); ?></pre>
 			</div>
 		<?php endif; ?>
 		</div>

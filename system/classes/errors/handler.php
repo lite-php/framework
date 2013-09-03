@@ -51,10 +51,6 @@ class ErrorHandler
 		 * Set the error handler
 		 */
 		set_error_handler(array($this, 'handleError'));
-
-		/**
-		 * Set the error reporting level.
-		 */
 	}
 
 	/**
@@ -68,7 +64,7 @@ class ErrorHandler
 	/**
 	 * Handles exceptions throw my the system or application
 	 */
-	public function handleException(Exception $e)
+	public function handleException(Exception $context)
 	{
 		/**
 		 * If we are within the CLI, just output the error message
@@ -76,31 +72,68 @@ class ErrorHandler
 		if(IS_CLI)
 		{
 			$output = Registry::get('Output');
-			$output->send("Error: Message: " . $e->getMessage());
-			$output->send("Error: File:    " . $e->getFile());
-			$output->send("Error: Line:    " . $e->getLine());
+			$output->send("Error: Message: " . $context->getMessage());
+			$output->send("Error: File:    " . $context->getFile());
+			$output->send("Error: Line:    " . $context->getLine());
 
-			foreach ($e->getTrace()	as $trace)
+			foreach ($context->getTrace() as $trace)
 			{
-				var_dump($trace);
+				print_r($trace);
 			}
 
 			return;
 		}
-		/**
-		 * Check to see if we can dispose this error
-		 */
 		
 		/**
 		 * Attaempt tp clear out any buffers
 		 */
-		while(ob_get_level() > 0) {
+		while(ob_get_level() > 0)
+		{
 			ob_end_clean();
 		}
-		
+
 		/**
-		 * Set the respons code to a 500 if headers are not sent.
+		 * Header status code
 		 */
+		$status = 500;
+
+		/**
+		 * If the exception code is 404, we treat that as a not found.
+		 */
+		if($context->getCode() >= 100 && $context->getCode() < 600)
+		{
+			$status = $context->getCode();
+		}
+
+		/**
+		 * Set and flush the headers
+		 */
+		Registry::get("Output")->setStatus($status);
+		Registry::get("Output")->sendHeaders();
+
+		/**
+		 * Look in the errors folder for a $status.php, use this
+		 */
+		$_specific = Registry::get('Application')->getResourceLocation('errors', $status, 'php');
+		$_generic  = Registry::get('Application')->getResourceLocation('errors', 'generic', 'php');
+
+		/**
+		 * If the page exists, include it.
+		 */
+		if(file_exists($_specific))
+		{
+			require $_specific;
+			exit(0);
+		}
+
+		/**
+		 * If the generic page exists, include it.
+		 */
+		if(file_exists($_generic))
+		{
+			require $_generic;
+			exit(0);
+		}
 		
 		/**
 		 * Require the template

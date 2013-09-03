@@ -72,13 +72,14 @@ class Application
 			/**
 			 * Should send a 404 here
 			 */
-			throw new Exception("Controller (" . $route->getController() . ") does not exists");
+			throw new Exception("Not found!", 404);
 		}
 
 		/**
 		 * If we are able to load the vendor bootstrap then do that now.
 		 */
-		if(file_exists($this->getResourceLocation("vendor", "autoload", "php"))) {
+		if(file_exists($this->getResourceLocation("vendor", "autoload", "php")))
+		{
 			require_once $this->getResourceLocation("vendor", "autoload", "php");
 		}
 
@@ -98,7 +99,7 @@ class Application
 		 */
 		if(!class_exists($controllerName))
 		{
-			throw new Exception("Controller (" . $route->getController() . ") is malformed");
+			throw new Exception("Not found!", 404);
 		}
 
 		/**
@@ -115,11 +116,11 @@ class Application
 			/**
 			 * Should throw a 404 here
 			 */
-			throw new Exception("Controller (" . $route->getController() . "::" . $route->getMethod() . ") does not exists");
+			throw new Exception("Not found!", 404);
 		}
 
 		/**
-		 * Run the method
+		 * Run the method, we may implement a utility here
 		 */
 		call_user_func_array(array($controller, $route->getMethod()), $route->getArguments());
 	}
@@ -135,7 +136,7 @@ class Application
 		 */
 		if(!is_dir($this->applicationPath))
 		{
-			throw new Exception('Application does not exists', 1);
+			throw new Exception('Application does not exists', 500);
 		}
 
 		/**
@@ -143,7 +144,7 @@ class Application
 		 */
 		if(!is_dir($this->applicationPath . '/controllers'))
 		{
-			throw new Exception('Application does not contain a controllers folder');
+			throw new Exception('Application does not contain a controllers folder', 500);
 		}
 	}
 
