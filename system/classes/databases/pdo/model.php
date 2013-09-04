@@ -15,7 +15,7 @@
  * Database Class
  * @extends PDO
  */
-class Database extends PDO
+class PDO_Model extends PDO
 {
 	/**
 	 * Connection state
