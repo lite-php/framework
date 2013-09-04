@@ -52,7 +52,6 @@ require_once('classes/databases/autoload.php');
  * Require the core application files
  */
 require_once('classes/application.php');
-//require_once('classes/mvc/model.php');
 require_once('classes/mvc/controller.php');
 require_once('classes/mvc/view.php');
 require_once('classes/route.php');
@@ -67,7 +66,6 @@ require_once('classes/view/template.php');
  * Instantiate objects into the registry
  */
 Registry::set('View',			new View());
-//Registry::set('Model',			new Model());
 Registry::set('Modelloader',	new ModelLoader());
 Registry::set('Libraryloader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
