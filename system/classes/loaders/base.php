@@ -96,7 +96,7 @@ class BaseLoader
 		 */
 		if($filelocation === false)
 		{
-			throw new Exception("Unable to load class (" . $key . "), file does not exists");
+			throw new Exception("Unable to load class (" . $class . "), file does not exists");
 		}
 
 		/**
@@ -133,7 +133,6 @@ class BaseLoader
 		 * Compile the file name
 		 */
 		$filename = $this->getProcessedFilename($key);
-
 		/**
 		 * Attempt to discover the location of file
 		 */
@@ -143,6 +142,7 @@ class BaseLoader
 			 * Create a pointer to the current file
 			 */
 			$file = $basepath . '/' . $filename;
+
 
 			/**
 			 * If it exists, return the path

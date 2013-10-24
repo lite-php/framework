@@ -71,10 +71,13 @@ class ErrorHandler
 		 */
 		if(IS_CLI)
 		{
-			$output = Registry::get('Output');
-			$output->send("Error: Message: " . $context->getMessage());
-			$output->send("Error: File:    " . $context->getFile());
-			$output->send("Error: Line:    " . $context->getLine());
+			//$output = Registry::get('Output');
+			error_log("Error: Message: " . $context->getMessage());
+			error_log("Error: File:    " . $context->getFile());
+			error_log("Error: Line:    " . $context->getLine());
+			//$output->send("Error: Message: " . $context->getMessage());
+			//$output->send("Error: File:    " . $context->getFile());
+			//$output->send("Error: Line:    " . $context->getLine());
 
 			foreach ($context->getTrace() as $trace)
 			{

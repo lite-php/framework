@@ -52,6 +52,10 @@ class Controller
 			case 'config':
 				return Registry::get('ConfigLoader');
 			break;
+
+			case 'helper':
+				return Registry::get('HelperLoader');
+			break;
 		}
 	}
 }

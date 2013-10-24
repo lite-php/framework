@@ -179,7 +179,7 @@ class Route
 			 * With the cli its hard to have control over the argument order
 			 * so we wass teh assoc array to the first argument.
 			 */
-			$this->arguments[] = array_slice($parser->getArguments(), 2);
+			$this->arguments = array_slice($parser->getArguments(), 2);
 		}
 	}
 

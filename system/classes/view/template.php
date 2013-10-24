@@ -152,6 +152,28 @@ class Template
 	}
 
 	/**
+	 * helper function for getting csrf tokens from the csrf library
+	 */
+	public function csrf()
+	{
+		/**
+		 * Return the html block that is used for the forms
+		 */
+		return Registry::get('Libraryloader')->csrf->html();
+	}
+
+	/**
+	 * helper function for getting csrf tokens from the csrf library
+	 */
+	public function csrftoken()
+	{
+		/**
+		 * Return the html block that is used for the forms
+		 */
+		return Registry::get('Libraryloader')->csrf->token();
+	}
+
+	/**
 	 * Helper to detect the controller/action on the current page
 	 */
 	public function isRoute($controller, $method = false)

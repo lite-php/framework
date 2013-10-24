@@ -161,6 +161,15 @@ class HTTPOutput
 		$this->setContentType('application/json');
 
 		/**
+		 * if we have a callback parameter, then wrape the content in that entity.
+		 */
+		if(Registry::get("Input")->get('jsonp'))
+		{
+			$payload =  Registry::get("Input")->get('jsonp') . "(" . $payload . ");";
+		}
+
+
+		/**
 		 * Send the payload to the client
 		 */
 		$this->send($payload);

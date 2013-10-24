@@ -167,7 +167,7 @@ class Application
 
 		/**
 		 * Create a new instance of the controller class
-		 * @var *
+		 * @var Controller
 		 */
 		$controller = $reflect->newInstance();
 
