@@ -40,6 +40,7 @@ require_once('classes/' . (IS_CLI ? 'cli' : 'http') . '/bootstrap.php');
 require_once('classes/loaders/base.php');
 require_once('classes/loaders/model.php');
 require_once('classes/loaders/library.php');
+require_once('classes/loaders/helper.php');
 require_once('classes/loaders/config.php');
 
 /**
@@ -69,6 +70,7 @@ Registry::set('View',			new View());
 Registry::set('Modelloader',	new ModelLoader());
 Registry::set('Libraryloader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
+Registry::set('HelperLoader',	new HelperLoader());
 Registry::set('Route',			new Route());
 Registry::set('Application',	new Application());
 
