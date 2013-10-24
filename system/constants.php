@@ -44,7 +44,7 @@
 /**
  * Check for windows enviroment
  */
-!defined('IS_WIN') && define('IS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+!defined('IS_WINDOWS') && define('IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
 /**
  * Define true if we are runnning on a sapi enviroment

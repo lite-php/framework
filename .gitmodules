@@ -13,3 +13,6 @@
 [submodule "system/libraries/bcrypt"]
 	path = system/libraries/bcrypt
 	url = https://github.com/lite-php/bcrypt-library.git
+[submodule "system/libraries/csrf"]
+	path = system/libraries/csrf
+	url = https://github.com/lite-php/csrf-library.git
