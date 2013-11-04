@@ -9,3 +9,5 @@
 .settings/
 .project
 .buildpath
+vendor
+
