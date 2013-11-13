@@ -12,181 +12,221 @@
 !defined('SECURE') && die('Access Forbidden!');
 
 /**
- * CommandLine class
- * Command Line Interface (CLI) utility class.
+ * Command line parser.
  */
 class CLIParser
 {
-    protected $arguments;
+    /**
+     * Positional type
+     * These type is usually a single word wor some quouted/escaped text
+     */
+    const TYPE_POSITIONAL = 0;
 
     /**
-     * PARSE ARGUMENTS
-     * 
-     * This command line option parser supports any combination of three types
-     * of options (switches, flags and arguments) and returns a simple array.
-     *
-     * @author              Patrick Fisher <patrick@pwfisher.com>
-     * @since               August 21, 2009
-     * @see                 https://github.com/pwfisher/CommandLine.php
-     * @see                 http://www.php.net/manual/en/features.commandline.php
-     *                      #81042 function arguments($argv) by technorati at gmail dot com, 12-Feb-2008
-     *                      #78651 function getArgs($args) by B Crawford, 22-Oct-2007
-     * @usage               $args = CommandLine::parseArgs();
+     * Boolean flags
+     * Tese are words that start with a - or -- and does not contain a =
+     */
+    const TYPE_FLAG_BOOL = 1;
+
+    /**
+     * Named Arguemnts / Flags with Values
+     * This are the same as {@link TYPE_FLAG_BOOL} but have a value
+     * assigned with the = sign
+     */
+    const TYPE_FLAG_VALUE = 2;
+
+    /**
+     * Positionals container
+     * @var Array
+     */
+    protected $positionals = array();
+
+    /**
+     * Flags container
+     * @var Array
+     */
+    protected $flags = array();
+
+    /**
+     * [$arguments description]
+     * @var Array
+     */
+    protected $arguments = array();
+
+    /**
+     * Constructor
      */
     public function __construct($argv = null)
     {
         /**
-         * Get an array of what we are parsing
-         * @var array
+         * Parse the arguments
          */
-        $argv                           = $argv ? $argv : $_SERVER['argv'];
+        $this->parse((is_array($argv) ? $argv : $_SERVER['argv']));
+    }
+
+    /**
+     * parse the arguments from an arguments array
+     * @param  array  $arguments input arguments
+     */
+    protected function parse($arguments)
+    {
+        /**
+         * Remove the first argument as it's the script name
+         */
+        array_shift($arguments);
 
         /**
-         * Shift
+         * Loop over the arguments
          */
-        array_shift($argv);
-
-        /**
-         * Start looping over the arguments
-         */
-        for ($i = 0, $j = count($argv); $i < $j; $i++)
+        foreach ($arguments as $idx => $value)
         {
             /**
-             * Current Argument
-             * @var string
+             * Detect the type of argument
              */
-            $arg                        = $argv[$i];
-
-            /**
-             * Check for --key or --key=value
-             * the defualt value would be true
-             */
-            if (substr($arg, 0, 2) === '--')
+            switch($this->_detect_arg_type($value))
             {
-                $eqPos                  = strpos($arg, '=');
+                case self::TYPE_POSITIONAL:
+                    /**
+                     * Positionals should not have an - or = chars
+                     */
+                    $this->positionals[] = $value;
+                break;
+                case self::TYPE_FLAG_BOOL:
+                    /**
+                     * Flags should be set to true always
+                     */
+                    $this->flags[ltrim($value, "-")] = true;
+                break;
+                case self::TYPE_FLAG_VALUE:
 
-                /**
-                 * Check for the value
-                 */
-                if ($eqPos === false)
-                {
-                    $key                = substr($arg, 2);
+                    /**
+                     * trim the value
+                     */
+                    $value = ltrim($value, "-");
 
-                    // --foo value
-                    if ($i + 1 < $j && $argv[$i + 1][0] !== '-')
-                    {
-                        $value          = $argv[$i + 1];
-                        $i++;
-                    }
-                    else
-                    {
-                        $value          = isset($this->arguments[$key]) ? $this->arguments[$key] : true;
-                    }
-                    $this->arguments[$key]          = $value;
-                }
+                    /**
+                     * Explode the parts
+                     */
+                    $kv = explode("=", $value);
 
-                // --bar=baz
-                else
-                {
-                    $key                = substr($arg, 2, $eqPos - 2);
-                    $value              = substr($arg, $eqPos + 1);
-                    $this->arguments[$key]          = $value;
-                }
-            }
-
-            // -k=value -abc
-            else if (substr($arg, 0, 1) === '-')
-            {
-                // -k=value
-                if (substr($arg, 2, 1) === '=')
-                {
-                    $key                = substr($arg, 1, 1);
-                    $value              = substr($arg, 3);
-                    $this->arguments[$key]          = $value;
-                }
-                // -abc
-                else
-                {
-                    $chars              = str_split(substr($arg, 1));
-                    foreach ($chars as $char)
-                    {
-                        $key            = $char;
-                        $value          = isset($this->arguments[$key]) ? $this->arguments[$key] : true;
-                        $this->arguments[$key]      = $value;
-                    }
-                    // -a value1 -abc value2
-                    if ($i + 1 < $j && $argv[$i + 1][0] !== '-')
-                    {
-                        $this->arguments[$key]      = $argv[$i + 1];
-                        $i++;
-                    }
-                }
-            }
-
-            // plain-arg
-            else
-            {
-                $this->arguments[] = $arg;
+                    /**
+                     * Flags should be set to true always
+                     */
+                    $this->arguements[$kv[0]] = $kv[1];
+                break;
             }
         }
     }
 
+    /**
+     * Detect the type of argument we that we are tryinging to parse
+     *
+     * foo       : foo          : Positional
+     * -foo      : foo = true   : Boolean Flag
+     * --foo     : foo = true   : Boolean Flag
+     * --foo=bar : foo = "bar"  : Flag with value
+     * 
+     * @param  string $value value used to detect a type from
+     * @return int           type of argument detected
+     */
+    protected function _detect_arg_type($value)
+    {
+        /**
+         * First attempt to dectect the possitionals
+         */
+        if(substr($value, 0, 1) != '-' && strpos($value, "=") === false)
+        {
+            return self::TYPE_POSITIONAL;
+        }
+
+        /**
+         * If we have a single - at the start, we treat as a flag
+         */
+        if(substr($value, 0, 1) == '-' && substr($value, 1, 1) != '-')
+        {
+            return self::TYPE_FLAG_BOOL;
+        }
+
+        /**
+         * If we have a double opt
+         */
+        /**
+         * If we have a single - at the start, we treat as a flag
+         */
+        if(substr($value, 0, 2) == '--')
+        {
+            /**
+             * If we have a = sign, it's a valie
+             */
+            if(strpos($value, "=") !== FALSE)
+            {
+                return self::TYPE_FLAG_VALUE;
+            }
+
+            /**
+             * Should be treated as a bool
+             */
+            return self::TYPE_FLAG_BOOL;
+        }
+    }
+
+    /**
+     * Returna positional based value
+     * @param  int  $offset     index of the positional
+     * @param  *    $default    value to return if the positional does not exist
+     * @return *                string value from the positional or the default value
+     */
+    public function getPositional($offset, $default = null)
+    {
+        return isset($this->positionals[$offset]) ? $this->positionals[$offset] : $default;
+    }
+
+    /**
+     * Return all the positionals
+     * @return Array array of positional values, in roder from ltr
+     */
+    public function getPositionals()
+    {
+        return $this->positionals;
+    }
+
+    /**
+     * Returna flag based value
+     * @param  string  $key     index of the flag
+     * @param  *       $default    value to return if the positional does not exist
+     * @return *                   string value from the positional or the default value
+     */
+    public function getFlag($key, $default = null)
+    {
+        return isset($this->flags[$key]) ? $this->flags[$offset] : $default;
+    }
+
+    /**
+     * Returna all the flags
+     * @return Array Array of flags
+     */
+    public function getFlags()
+    {
+        return $this->flags;
+    }
+
+    /**
+     * Returna an argument value from it's key.
+     * @param  string  $key     index of the flag
+     * @param  *       $default    value to return if the positional does not exist
+     * @return *                   string value from the positional or the default value
+     */
+    public function getArgument($key, $default = null)
+    {
+        return isset($this->arguments[$key]) ? $this->arguments[$key] : $default;
+    }
+
+    /**
+     * Return all the arguments
+     * @return Array Array of arguments
+     */
     public function getArguments()
     {
         return $this->arguments;
-    }
-
-    /**
-     * get an argument at a possition
-     */
-    public function getArgument($key)
-    {
-        return $this->arguments[$key];
-    }
-
-    /**
-     * GET BOOLEAN
-     */
-    public function getBoolean($key, $default = false)
-    {
-        if (!isset($this->arguments[$key]))
-        {
-            return $default;
-        }
-
-        $value = $this->arguments[$key];
-
-        if (is_bool($value))
-        {
-            return $value;
-        }
-
-        if (is_int($value))
-        {
-            return (bool)$value;
-        }
-
-        if (is_string($value))
-        {
-            $value                      = strtolower($value);
-            $map = array(
-                'y'                     => true,
-                'n'                     => false,
-                'yes'                   => true,
-                'no'                    => false,
-                'true'                  => true,
-                'false'                 => false,
-                '1'                     => true,
-                '0'                     => false,
-                'on'                    => true,
-                'off'                   => false,
-            );
-            if (isset($map[$value]))
-            {
-                return $map[$value];
-            }
-        }
-
-        return $default;
     }
 }
