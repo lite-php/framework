@@ -112,7 +112,7 @@ class CLIParser
                     /**
                      * Flags should be set to true always
                      */
-                    $this->arguements[$kv[0]] = $kv[1];
+                    $this->arguments[$kv[0]] = $kv[1];
                 break;
             }
         }
