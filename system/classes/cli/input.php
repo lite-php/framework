@@ -15,11 +15,24 @@ class CLIInput
 {
 	/**
 	 * Input stream
+	 * @var Resource
 	 */
 	protected $stdin;
 
 	/**
-	 * Constructor
+	 * Parser Object
+	 * @var CLIParser
+	 */
+	protected $parser;
+
+	/**
+	 * string values that can be assumed as a true value
+	 * @var Array
+	 */
+	protected $true_like_values = array("yes", "y", "ok", "true");
+
+	/**
+	 * Open streams and link sub-objects
 	 */
 	public function __construct()
 	{
@@ -27,60 +40,127 @@ class CLIInput
 		 * Get the stdin
 		 */
 		$this->stdin = fopen('php://stdin', 'r');
+
+		/**
+		 * Set the parser object
+		 */
+		$this->parser = Registry::get('CLIParser');
 	}
 
 	/**
-	 * Asks the user a question
-	 * @return string answer
+	 * [Return a boolean from a given set of positive values
+	 * @param  string $value value from input
+	 * @return boolean       converted boolean
 	 */
-	public function ask($question, $allowed_responses = array())
+	protected function _bool($value)
+	{
+		return in_array(strtolower($value), $this->true_like_values);
+	}
+
+	/**
+	 * Promt a question and return a misc input
+	 * @param  string $msg question to be asked
+	 * @return string      answer
+	 */
+	public function prompt($msg)
 	{
 		/**
-		 * Map the possible answers
+		 * Show the message
 		 */
-		for($i = 0; $i < count($allowed_responses); $i++)
+		$this->out($msg . ": ", false);
+
+		/**
+		 * Return the input
+		 */
+		return $this->read();
+	}
+
+	/**
+	 * Ask a queston, alias for {@link prompt}
+	 * @param  string $msg question to be asked
+	 * @return string      answer
+	 */
+	public function ask($msg)
+	{
+		return $this->prompt($msg);
+	}
+
+	/**
+	 * Ask a uestion and get a yes/no decision
+	 * @param  string $message question to ask
+	 * @return boolean         answer casted to a boolean
+	 */
+	public function confirm($message)
+	{
+		return $this->_bool($this->prompt($message));
+	}
+
+	/**
+	 * Display a list of options with a question
+	 * @param  string 			$question Question to ask.
+	 * @param  array  			$options  List of options to show.
+	 * @param  int|string|null 	$default  Default option if enter is pressed.
+	 * @return int|string 		Answer from the input
+	 */
+	public function choose($question, $options, $default = null)
+	{
+		/**
+		 * List out the options
+		 */
+		foreach ($options as $index => $description)
 		{
-			Registry::get('Output')->send("[" . $i . "] " . $allowed_responses[$i]);
+			$this->out(sprintf("  %.12s) %-30.30s", $index, $description));
 		}
 
 		/**
-		 * Send the question to the output class
+		 * Ask the question
 		 */
-		Registry::get('Output')->send($question . ": ", false);
+		$this->out($question . ": ", false);
 
 		/**
-		 * Read teh answer
+		 * Get the asnwer
 		 */
 		$answer = $this->read();
 
 		/**
-		 * If we have an number and it's within the range of the answers
+		 * Validate the answer is acceptible
 		 */
-		if(count($allowed_responses) > 0 && (is_numeric($answer) && isset($allowed_responses[$answer])))
+		if(array_key_exists($answer, $options))
 		{
-			/**
-			 * Return the number
-			 */
-			return $allowed_responses[$answer];
-		}
-
-		if(count($allowed_responses) > 0 && !isset($allowed_responses[$answer]))
-		{
-			/**
-			 * We should ask the question again as thats an invalid response
-			 */
-			Registry::get('Output')->error("Inavlid answer, please choose from the following options");
-			return $this->ask($question, $allowed_responses);
+			return $answer;
 		}
 
 		/**
-		 * Return teh answer as its just a requested string
+		 * Check for the defualt 
 		 */
-		return $answer;
+		if($default && $answer == "")
+		{
+			return $default;
+		}
+
+		/**
+		 * aask the question again, recursivly
+		 */
+		return $this->choose($question, $options);
 	}
 
+	/**
+	 * Write dat to the output class
+	 * @param  string  $data    data to write
+	 * @param  boolean $newline end with a new line
+	 * @return void
+	 */
+	protected function out($data, $newline = true)
+	{
+		Registry::get("Output")->send($data, $newline);
+	}
+
+	/**
+	 * Get the user input from stdin
+	 * @return string trimmed value from stdin
+	 */
 	public function read()
 	{
-		return fgets($this->stdin);
+		return trim(fgets($this->stdin));
 	}
 }
