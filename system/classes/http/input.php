@@ -69,6 +69,15 @@ class HTTPInput
 	}
 
 	/**
+	 * Check if the request method is of type GET
+	 * @return boolean
+	 */
+	public function isGet()
+	{
+		return 'GET' === $this->getRequestMethod();
+	}
+
+	/**
 	 * Detect if a form has been submitted to this page.
 	 * @return boolean if there has been a post request.
 	 */
