@@ -117,6 +117,12 @@ class Application
 		$reflect = new ReflectionClass($controllerName);
 
 		/**
+		 * Create a new instance of the controller class
+		 * @var Controller
+		 */
+		$controller = $reflect->newInstance();
+
+		/**
 		 * Validate the class a valid class
 		 */
 		if(!$reflect->isUserDefined() || !$reflect->isInstantiable())
@@ -164,12 +170,6 @@ class Application
 				throw new Exception("Bad Request", 400);
 			}
 		}
-
-		/**
-		 * Create a new instance of the controller class
-		 * @var Controller
-		 */
-		$controller = $reflect->newInstance();
 
 		/**
 		 * Run the method, we may implement a utility here
