@@ -89,11 +89,6 @@ class CLIOutput
 		 * Connect to the stream
 		 */
 		$this->stderr = fopen('php://stderr', 'w');
-
-		/**
-		 * Set the default prompt
-		 */
-		$this->setPrompt("> ");
 	}
 
 	/**
@@ -138,7 +133,7 @@ class CLIOutput
 		$string .= $text . ($string != "" ? "\033[0m" : "");
 		return $string;
 	}
-
+	
 	/**
 	 * Send a message to the console
 	 */
