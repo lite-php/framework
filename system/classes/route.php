@@ -162,16 +162,16 @@ class Route
 		/**
 		 * First argument is the controller
 		 */
-		if($parser->getArgument(0))
+		if($parser->getPositional(0))
 		{
-			$this->controller = $parser->getArgument(0);
+			$this->controller = $parser->getPositional(0);
 
 			/**
 			 * Method
 			 */
-			if($parser->getArgument(1))
+			if($parser->getPositional(1))
 			{
-				$this->method = $parser->getArgument(1);
+				$this->method = $parser->getPositional(1);
 			}
 
 			/**
@@ -179,7 +179,7 @@ class Route
 			 * With the cli its hard to have control over the argument order
 			 * so we wass teh assoc array to the first argument.
 			 */
-			$this->arguments = array_slice($parser->getArguments(), 2);
+			$this->arguments = array_slice($parser->getPositionals(), 2);
 		}
 	}
 
@@ -197,6 +197,14 @@ class Route
 	public function getMethod()
 	{
 		return $this->method;
+	}
+
+	/**
+	 * Set the method
+	 */
+	public function setMethod($method)
+	{
+		$this->method = $method;
 	}
 
 	/**
