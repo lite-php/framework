@@ -58,7 +58,7 @@ class ErrorHandler
 	 */
 	public function handleError($errno, $errstr, $errfile, $errline)
 	{
-		throw new Exception($errstr, $errno);
+		$this->handleException(new Exception($errstr, $errno));
 	}
 
 	/**
@@ -67,21 +67,41 @@ class ErrorHandler
 	public function handleException(Exception $context)
 	{
 		/**
+		 * Detect if this is a http exception
+		 */
+		$isHttpException = $context->getCode() <= 100 || $context->getCode() > 600;
+		
+		/**
 		 * If we are within the CLI, just output the error message
 		 */
 		if(IS_CLI)
 		{
+			/**
+			 * Process the stack trace and error message
+			 */
+			
 			//$output = Registry::get('Output');
-			error_log("Error: Message: " . $context->getMessage());
-			error_log("Error: File:    " . $context->getFile());
-			error_log("Error: Line:    " . $context->getLine());
+			//error_log("Error: Message: " . $context->getMessage());
+			//error_log("Error: File:    " . $context->getFile());
+			//error_log("Error: Line:    " . $context->getLine());
 			//$output->send("Error: Message: " . $context->getMessage());
 			//$output->send("Error: File:    " . $context->getFile());
 			//$output->send("Error: Line:    " . $context->getLine());
 
-			foreach ($context->getTrace() as $trace)
+			/**
+			 * Show the error message
+			 */
+			error_log("Information:\n\t" . implode("\n\t", array(
+				"Msg:\t" . $context->getCode() . " - " . $context->getMessage(),
+				"File:\t" . $context->getFile() . ":" . $context->getLine(),
+			)) . "\n");
+			
+			/**
+			 * Show the stack trace
+			 */
+			if($isHttpException)
 			{
-				print_r($trace);
+				error_log("Stactrace:\n\t" . str_replace("\n", "\n\t", $context->getTraceAsString()));
 			}
 
 			return;
@@ -103,7 +123,7 @@ class ErrorHandler
 		/**
 		 * If the exception code is 404, we treat that as a not found.
 		 */
-		if($context->getCode() >= 100 && $context->getCode() < 600)
+		if($isHttpException)
 		{
 			$status = $context->getCode();
 		}
