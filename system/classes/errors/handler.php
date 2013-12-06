@@ -69,7 +69,7 @@ class ErrorHandler
 		/**
 		 * Detect if this is a http exception
 		 */
-		$isHttpException = $context->getCode() <= 100 || $context->getCode() > 600;
+		$isHttpException = $context->getCode() >= 100 && $context->getCode() < 600;
 		
 		/**
 		 * If we are within the CLI, just output the error message

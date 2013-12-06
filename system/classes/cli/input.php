@@ -145,6 +145,41 @@ class CLIInput
 	}
 
 	/**
+	 * A utility method to return a postional argument of flag
+	 */
+	public function get($key, $default = null)
+	{
+		/**
+		 * Check the arguments first
+		 */
+		if($this->parser->getArgument($key) !== null)
+		{
+			return $this->parser->getArgument($key);
+		}
+
+		/**
+		 * Check the flags
+		 */
+		if($this->parser->getFlag($key) !== null)
+		{
+			return $this->parser->getFlag($key);
+		}
+
+		/**
+		 * Return the defualt
+		 */
+		return $default;
+	}
+
+	public function flag($key)
+	{
+		/**
+		 * Return the flag or false
+		 */
+		return $this->parser->getFlag($key);
+	}
+
+	/**
 	 * Write dat to the output class
 	 * @param  string  $data    data to write
 	 * @param  boolean $newline end with a new line

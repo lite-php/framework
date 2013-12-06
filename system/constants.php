@@ -22,6 +22,12 @@
 !defined('SYSTEM_PATH') && define('SYSTEM_PATH', __DIR__);
 
 /**
+ * Define the application enviroment
+ * Use like so, ENVIRONMENT=staging php index.php or confirugure in webserver config.
+ */
+!defined("ENVIRONMENT") && define("ENVIRONMENT", getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'production');
+
+/**
  * Base URL Path
  */
 !defined('BASE_URL') && define('BASE_URL', rtrim(dirname($_SERVER['PHP_SELF']), '/'));

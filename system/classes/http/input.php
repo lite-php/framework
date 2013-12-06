@@ -2,7 +2,7 @@
 /**
  * LightPHP Framework
  * LitePHP is a framework that has been designed to be lite waight, extensible and fast.
- * 
+ *
  * @author Robert Pitt <robertpitt1988@gmail.com>
  * @category core
  * @copyright 2013 Robert Pitt
@@ -15,7 +15,7 @@
  * HTTP Input Class
  *
  * This class tries to encapsulates all the input components of the PHP, this inlcudes
- * User Input, Browser Input such as Cokies, 
+ * User Input, Browser Input such as Cokies,
  */
 class HTTPInput
 {
@@ -110,12 +110,12 @@ class HTTPInput
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string|null
 	 */
-	public function get($key, $filters = FILTER_DEFAULT)
+	public function get($key, $filters = FILTER_DEFAULT, $options = null)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return $this->_filtered_input(INPUT_GET, $key, $filters);
+		return $this->_filtered_input(INPUT_GET, $key, $filters, $options);
 	}
 
 	/**
@@ -123,12 +123,12 @@ class HTTPInput
 	 * @param  string $key
 	 * @return string|null
 	 */
-	public function post($key, $filters = FILTER_DEFAULT)
+	public function post($key, $filters = FILTER_DEFAULT, $options = null)
 	{
 		/**
 		 * Return the post value
 		 */
-		return $this->_filtered_input(INPUT_POST, $key, $filters);
+		return $this->_filtered_input(INPUT_POST, $key, $filters, $options);
 	}
 
 	/**
@@ -137,12 +137,12 @@ class HTTPInput
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string|null
 	 */
-	public function cookie($key, $filters = FILTER_DEFAULT)
+	public function cookie($key, $filters = FILTER_DEFAULT, $options = null)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return $this->_filtered_input(INPUT_COOKIE, $key, $filters);
+		return $this->_filtered_input(INPUT_COOKIE, $key, $filters, $options);
 	}
 
 	/**
@@ -151,12 +151,12 @@ class HTTPInput
 	 * @param  int 		$filters the bitmask for filers to use, see FILTER_*
 	 * @return string|null
 	 */
-	public function server($key, $filters = FILTER_DEFAULT)
+	public function server($key, $filters = FILTER_DEFAULT, $options = null)
 	{
 		/**
 		 * Return the get variable
 		 */
-		return $this->_filtered_input(INPUT_SERVER, $key, $filters);
+		return $this->_filtered_input(INPUT_SERVER, $key, $filters, $options);
 	}
 
 	/**
@@ -182,7 +182,7 @@ class HTTPInput
 	 */
 	public function _filtered_input($type, $key, $filters = FILTER_DEFAULT, $options = array())
 	{
-		return filter_input($type, $key, $filters);
+		return filter_input($type, $key, $filters, $options);
 	}
 
 	/**

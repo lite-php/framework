@@ -17,6 +17,16 @@
 class CLIParser
 {
     /**
+     * Positionals
+     */
+    protected $positionals = array();
+
+    /**
+     * Flags
+     */
+    protected $flags = array();
+
+    /**
      * Positional type
      * These type is usually a single word wor some quouted/escaped text
      */
@@ -36,20 +46,8 @@ class CLIParser
     const TYPE_FLAG_VALUE = 2;
 
     /**
-     * Positionals container
-     * @var Array
-     */
-    protected $positionals = array();
-
-    /**
-     * Flags container
-     * @var Array
-     */
-    protected $flags = array();
-
-    /**
      * [$arguments description]
-     * @var Array
+     * @var [type]
      */
     protected $arguments = array();
 
@@ -65,10 +63,9 @@ class CLIParser
     }
 
     /**
-     * parse the arguments from an arguments array
-     * @param  array  $arguments input arguments
+     * Parser Arguments
      */
-    protected function parse($arguments)
+    protected function parse($arguments = array())
     {
         /**
          * Remove the first argument as it's the script name
@@ -112,23 +109,12 @@ class CLIParser
                     /**
                      * Flags should be set to true always
                      */
-                    $this->arguments[$kv[0]] = $kv[1];
+                    $this->arguements[$kv[0]] = $kv[1];
                 break;
             }
         }
     }
 
-    /**
-     * Detect the type of argument we that we are tryinging to parse
-     *
-     * foo       : foo          : Positional
-     * -foo      : foo = true   : Boolean Flag
-     * --foo     : foo = true   : Boolean Flag
-     * --foo=bar : foo = "bar"  : Flag with value
-     * 
-     * @param  string $value value used to detect a type from
-     * @return int           type of argument detected
-     */
     protected function _detect_arg_type($value)
     {
         /**
@@ -171,10 +157,7 @@ class CLIParser
     }
 
     /**
-     * Returna positional based value
-     * @param  int  $offset     index of the positional
-     * @param  *    $default    value to return if the positional does not exist
-     * @return *                string value from the positional or the default value
+     * Return a positional value
      */
     public function getPositional($offset, $default = null)
     {
@@ -182,8 +165,7 @@ class CLIParser
     }
 
     /**
-     * Return all the positionals
-     * @return Array array of positional values, in roder from ltr
+     * Return a positional value
      */
     public function getPositionals()
     {
@@ -191,42 +173,23 @@ class CLIParser
     }
 
     /**
-     * Returna flag based value
-     * @param  string  $key     index of the flag
-     * @param  *       $default    value to return if the positional does not exist
-     * @return *                   string value from the positional or the default value
+     * Return a flag is set
      */
-    public function getFlag($key, $default = null)
+    public function getFlag($key, $default = false)
     {
-        return isset($this->flags[$key]) ? $this->flags[$offset] : $default;
+        return isset($this->flags[$key]) ? $this->flags[$key] : $default;
+    }
+
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**
-     * Returna all the flags
-     * @return Array Array of flags
-     */
-    public function getFlags()
-    {
-        return $this->flags;
-    }
-
-    /**
-     * Returna an argument value from it's key.
-     * @param  string  $key     index of the flag
-     * @param  *       $default    value to return if the positional does not exist
-     * @return *                   string value from the positional or the default value
+     * get an argument at a possition
      */
     public function getArgument($key, $default = null)
     {
         return isset($this->arguments[$key]) ? $this->arguments[$key] : $default;
-    }
-
-    /**
-     * Return all the arguments
-     * @return Array Array of arguments
-     */
-    public function getArguments()
-    {
-        return $this->arguments;
     }
 }

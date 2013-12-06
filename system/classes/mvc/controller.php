@@ -17,6 +17,11 @@
 class Controller
 {
 	/**
+	 * blank constructor.
+	 */
+	public function __construct(){}
+	
+	/**
 	 * Returns an object or an action to the Applications Controller
 	 * @param  string $object
 	 * @return *
