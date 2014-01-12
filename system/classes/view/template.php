@@ -18,18 +18,24 @@ class Template
 {
 	/**
 	 * An area to hold the data for in-view access.
+	 * @var String
 	 */
 	private $__DATA_;
 
 	/**
 	 * An area to hold the data for in-view access.
+	 * @var String
 	 */
 	private $__BASE_PATH_;
 
 	/**
 	 * We compile here so we don't clog the view's namespace
+	 * @param String  	$__base_path Templates root path
+	 * @param String  	$__template  Main template file
+	 * @param Array  	$__data      Data to be exposed within view
+	 * @param Function 	$callback    Callback to be called with compiled data, if ommited data is sent to the output
 	 */
-	public function __construct($__base_path, $__template, $__data, $callback = false)
+	public function __construct($__base_path, $__template, $__data, $callback = null)
 	{
 		/**
 		 * Set the base path
@@ -72,10 +78,9 @@ class Template
 		/**
 		 * If we are returning we need to return by reference
 		 */
-		if($callback !== false)
+		if($callback !== null)
 		{
-			$callback($content);
-			return;
+			return $callback($content);
 		}
 		
 		/**
@@ -104,9 +109,26 @@ class Template
 		return isset($this->__DATA_[$param]);
 	}
 
+	/**
+	 * Encode a string into it's entities
+	 * @param  String 	$data     Content to be encoded
+	 * @param  Int 		$mode     ENT_* Mode to use when encoding
+	 * @param  string 	$encoding Encoding to be used
+	 * @return String             Encoded content
+	 */
 	public function encode($data, $mode = ENT_QUOTES, $encoding = "UTF-8")
 	{
 		return htmlentities($data, $mode, $encoding);
+	}
+
+	/**
+	 * Encode data into it's entities and also encoding special chars.
+	 * @param  String $value Content to be encoded
+	 * @return String        Encoded content
+	 */
+	public function encodeSpecialChars($value)
+	{
+		return htmlspecialchars($value);
 	}
 
 	/**
@@ -130,7 +152,7 @@ class Template
 		/**
 		 * Create a url that is set the the base path
 		 */
-		$url = BASE_URL . ($controller ? '/' . $controller : '') . ($controller && $method ? '/' . $method : '');
+		$url = BASE_PATH . ($controller ? '/' . $controller : '') . ($controller && $method ? '/' . $method : '');
 
 		/**
 		 * Loop the arguments
@@ -144,50 +166,83 @@ class Template
 	}
 
 	/**
-	 * Create a relative link to the base url
+	 * Create a absolute link to the base url
 	 */
-	public function link($path)
+	public function link()
 	{
-		return BASE_URL . '/' . ltrim($path, '/');
+		return BASE_URL . call_user_func_array(array($this, 'route'), (array)func_get_args());
 	}
 
 	/**
 	 * helper function for getting csrf tokens from the csrf library
+	 *
+	 * @throws Exception If csrf library is not available
 	 */
 	public function csrf()
 	{
 		/**
 		 * Return the html block that is used for the forms
 		 */
-		return Registry::get('Libraryloader')->csrf->html();
+		return Registry::get('LibraryLoader')->csrf->html();
 	}
 
 	/**
 	 * helper function for getting csrf tokens from the csrf library
+	 *
+	 * @throws Exception If csrf library is not available
 	 */
-	public function csrftoken()
+	public function csrfToken()
 	{
 		/**
 		 * Return the html block that is used for the forms
 		 */
-		return Registry::get('Libraryloader')->csrf->token();
+		return Registry::get('LibraryLoader')->csrf->token();
+	}
+
+	/**
+	 * Fetch a value for GET/POST and return its encoded value
+	 * @param  String  $key      key used for element
+	 * @return String            Encoded GET/POST Value
+	 */
+	public function formValue($key)
+	{
+		/**
+		 * Fetch the input class
+		 */
+		$input = Registry::get('Input');
+
+		/**
+		 * Check for post, then get
+		 */
+		if($input->isPost())
+		{
+			return htmlspecialchars($input->post($key));
+		}
+
+		return htmlspecialchars($input->get($key));
 	}
 
 	/**
 	 * Helper to detect the controller/action on the current page
+	 * @param  String  $controller Controller key
+	 * @param  String  $method     Method to check as well, optional.
+	 * @return boolean             [description]
 	 */
-	public function isRoute($controller, $method = false)
+	public function isRoute($controller, $method = null)
 	{
 		$Route = Registry::get('Route');
 
 		/**
 		 * Validate controller only
 		 */
-		if($method == false)
+		if($method === null)
 		{
 			return $Route->getController() == $controller;
 		}
 
+		/**
+		 * Validate both controller and method matches
+		 */
 		return $Route->getController() == $controller && $Route->getmethod() == $method;
 	}
 }
