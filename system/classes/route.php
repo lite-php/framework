@@ -2,7 +2,7 @@
 /**
  * LightPHP Framework
  * LitePHP is a framework that has been designed to be lite waight, extensible and fast.
- * 
+ *
  * @author Robert Pitt <robertpitt1988@gmail.com>
  * @category core
  * @copyright 2013 Robert Pitt
@@ -10,8 +10,6 @@
  * @version 1.0.0
  */
 !defined('SECURE') && die('Access Forbidden!');
-
-class Ab£{}
 
 /**
  * Route Class
@@ -69,7 +67,7 @@ class Route
 		 * Fetch the input object from the registry
 		 */
 		$this->input = Registry::get('Input');
-		
+
 		/**
 		 * Fetch the output object from the registry
 		 */

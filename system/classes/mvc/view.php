@@ -67,7 +67,7 @@ class View
 		 */
 		if(!$application->viewExists($view))
 		{
-			throw new Exception("Unalbe to locate view file");
+			throw new Exception("Unable to locate ($view) view", 1);
 		}
 
 		/**

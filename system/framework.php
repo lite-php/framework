@@ -67,8 +67,8 @@ require_once('classes/view/template.php');
  * Instantiate objects into the registry
  */
 Registry::set('View',			new View());
-Registry::set('Modelloader',	new ModelLoader());
-Registry::set('Libraryloader',	new LibraryLoader());
+Registry::set('ModelLoader',	new ModelLoader());
+Registry::set('LibraryLoader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
 Registry::set('HelperLoader',	new HelperLoader());
 Registry::set('Route',			new Route());

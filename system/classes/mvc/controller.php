@@ -47,11 +47,11 @@ class Controller
 			break;
 
 			case 'model':
-				return Registry::get('Modelloader');
+				return Registry::get('ModelLoader');
 			break;
 
 			case 'library':
-				return Registry::get('Libraryloader');
+				return Registry::get('LibraryLoader');
 			break;
 
 			case 'config':
