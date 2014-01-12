@@ -28,9 +28,26 @@
 !defined("ENVIRONMENT") && define("ENVIRONMENT", getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'production');
 
 /**
- * Base URL Path
+ * Configure the protocol were using
  */
-!defined('BASE_URL') && define('BASE_URL', rtrim(dirname($_SERVER['PHP_SELF']), '/'));
+!defined("HTTP_PROTOCOL") && define('HTTP_PROTOCOL', "http" . (isset($_SERVER['HTTPS']) ? "s" : "") . "://");
+
+/**
+ * Cofigure the http domain this system is running on
+ * @todo Possible check this better
+ */
+!defined('HTTP_HOST') && define('HTTP_HOST', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "127.0.0.1");
+
+/**
+ * Configure the base path
+ */
+!defined('BASE_PATH') && define('BASE_PATH', rtrim(dirname($_SERVER['PHP_SELF']), '/'));
+
+/**
+ * Base URL Path
+ * @todo this should be done better.
+ */
+!defined('BASE_URL') && define('BASE_URL', HTTP_PROTOCOL . HTTP_HOST . BASE_PATH);
 
 /**
  * Start time
