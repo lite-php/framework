@@ -16,3 +16,6 @@
 [submodule "system/libraries/csrf"]
 	path = system/libraries/csrf
 	url = https://github.com/lite-php/csrf-library.git
+[submodule "system/libraries/http"]
+	path = system/libraries/http
+	url = https://github.com/lite-php/http-library.git
