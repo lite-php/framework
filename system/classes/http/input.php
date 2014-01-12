@@ -186,6 +186,15 @@ class HTTPInput
 	}
 
 	/**
+	 * Set a cookie
+	 * @todo Change this to appy the defaults from the configuration files
+	 */
+	public function setCookie($name, $value = '', $expire = 86500, $domain = '', $path = '/', $prefix = '', $secure = false, $httponly = false)
+	{
+		return setcookie($name, $value, time() + $expire, $path, $domain, $secure, $httponly);
+	}
+
+	/**
 	 * Returns the IP for the current requester
 	 * @return string Ip address that made this request, even behind proxies.
 	 */
