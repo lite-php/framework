@@ -2,7 +2,7 @@
 /**
  * LightPHP Framework
  * LitePHP is a framework that has been designed to be lite waight, extensible and fast.
- * 
+ *
  * @author Robert Pitt <robertpitt1988@gmail.com>
  * @category core
  * @copyright 2013 Robert Pitt
@@ -89,7 +89,7 @@ class PDO_Model extends PDO
     /**
      * Set database config params
      * config param should contains dsn, username, password and options
-     * 
+     *
      * @param array $config
      * @param string $instance
      */
