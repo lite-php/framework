@@ -24,6 +24,16 @@ class ErrorHandler
 	private static $__instance;
 
 	/**
+	 * Traceline Template
+	 */
+	protected $traceline = "#%s %s(%s): %s(%s)";
+
+	/**
+	 * Log template
+	 */
+	protected $log_template = "PHP Fatal error:  Uncaught exception '%s' with message '%s' in %s:%s\nStack trace:\n%s\n  thrown in %s on line %s";
+
+	/**
 	 * Return an instance of the exception handler
 	 */
 	public static function getInstance()
@@ -54,6 +64,71 @@ class ErrorHandler
 	}
 
 	/**
+	 * Write out an exception to the error_log
+	 * @param  Exception $exception Exception in question
+	 */
+	protected function log_exception(Exception $exception)
+	{
+		/**
+		 * Get the stack trace from the exveption
+		 * @var Array
+		 */
+		$trace = $exception->getTrace();
+
+		/**
+		 * Sanitize the function values
+		 */
+		foreach ($trace as $key => $stackPoint)
+		{
+			/**
+			 * I'm converting arguments to their type
+			 * prevents passwords from ever getting logged as anything other than 'string'
+			 */
+			$trace[$key]['args'] = array_map('gettype', $trace[$key]['args']);
+		}
+
+		/**
+		 * build your tracelines
+		 * @var array
+		 */
+		$result = array();
+
+		/**
+		 * Itterate over the sta
+		 * @var [type]
+		 */
+		foreach ($trace as $key => $stack)
+		{
+			$result[] = sprintf(
+				$this->traceline,
+				$key,
+				empty($stack['file']) ? "??" : $stack['file'],
+				empty($stack['line']) ? "??" : $stack['line'],
+				empty($stack['function']) ? "?" : $stack['function'],
+				implode(', ', $stack['args'])
+			);
+		}
+
+		/**
+		 * trace always ends with {main}
+		 */
+		$result[] = '#' . ++$key . ' {main}';
+
+		/**
+		 * write tracelines into main template
+		 * @var String
+		 */
+		$report = sprintf($this->log_template, get_class($exception), $exception->getMessage(), $exception->getFile(),
+			$exception->getLine(), implode("\n", $result), $exception->getFile(), $exception->getLine()
+		);
+
+		/**
+		 * Send teh report ot the log file
+		 */
+		error_log($report);
+	}
+
+	/**
 	 * Handles errors throw my the system or application
 	 */
 	public function handleError($errno, $errstr, $errfile, $errline)
@@ -70,6 +145,11 @@ class ErrorHandler
 		 * Detect if this is a http exception
 		 */
 		$isHttpException = $context->getCode() >= 100 && $context->getCode() < 600;
+
+		/**
+		 * Write hetxception to the log
+		 */
+		$this->log_exception($context);
 		
 		/**
 		 * If we are within the CLI, just output the error message
@@ -77,33 +157,9 @@ class ErrorHandler
 		if(IS_CLI)
 		{
 			/**
-			 * Process the stack trace and error message
+			 * As te exception is logged ot error_log above, we can just exit here as the caller
+			 * has the trace on screen.
 			 */
-			
-			//$output = Registry::get('Output');
-			//error_log("Error: Message: " . $context->getMessage());
-			//error_log("Error: File:    " . $context->getFile());
-			//error_log("Error: Line:    " . $context->getLine());
-			//$output->send("Error: Message: " . $context->getMessage());
-			//$output->send("Error: File:    " . $context->getFile());
-			//$output->send("Error: Line:    " . $context->getLine());
-
-			/**
-			 * Show the error message
-			 */
-			error_log("Information:\n\t" . implode("\n\t", array(
-				"Msg:\t" . $context->getCode() . " - " . $context->getMessage(),
-				"File:\t" . $context->getFile() . ":" . $context->getLine(),
-			)) . "\n");
-			
-			/**
-			 * Show the stack trace
-			 */
-			if($isHttpException)
-			{
-				error_log("Stactrace:\n\t" . str_replace("\n", "\n\t", $context->getTraceAsString()));
-			}
-
 			return;
 		}
 		
