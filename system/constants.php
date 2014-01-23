@@ -25,7 +25,7 @@
  * Define the application enviroment
  * Use like so, ENVIRONMENT=staging php index.php or confirugure in webserver config.
  */
-!defined("ENVIRONMENT") && define("ENVIRONMENT", getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'production');
+!defined("ENVIRONMENT") && define("ENVIRONMENT", getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'development');
 
 /**
  * Configure the protocol were using
