@@ -9,5 +9,7 @@
 .settings/
 .project
 .buildpath
+cache.properties
+build
 vendor
 
