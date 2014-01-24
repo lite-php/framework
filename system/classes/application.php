@@ -93,6 +93,11 @@ class Application
 		}
 
 		/**
+		 * Instnatiate a default logger for the application
+		 */
+		Registry::set("Logger", KLogger::instance($this->getResourceLocation("logs")));
+
+		/**
 		 * Load the controller
 		 */
 		require_once $this->getControllerPath($route->getController());
@@ -170,6 +175,11 @@ class Application
 				throw new Exception("Bad Request", 400);
 			}
 		}
+
+		/**
+		 * Log the route
+		 */
+		Registry::get("SystemLogger")->logInfo("Executing route (" . $route->getController() . "/" . $route->getMethod() . ")");
 
 		/**
 		 * Run the method, we may implement a utility here

@@ -52,6 +52,8 @@ class View
 	 */
 	public function render($view)
 	{
+		Registry::get("SystemLogger")->logInfo("Rendering view {$view}");
+
 		/**
 		 * Get the application
 		 */

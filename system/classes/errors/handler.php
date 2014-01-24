@@ -126,6 +126,7 @@ class ErrorHandler
 		 * Send teh report ot the log file
 		 */
 		error_log($report);
+		Registry::get("SystemLogger")->logError("ERROR Report:: {$report}");
 	}
 
 	/**
@@ -147,9 +148,9 @@ class ErrorHandler
 		$isHttpException = $context->getCode() >= 100 && $context->getCode() < 600;
 
 		/**
-		 * Write hetxception to the log
+		 * Log the exception if it's not a HTTP Exception
 		 */
-		$this->log_exception($context);
+		!$isHttpException && $this->log_exception($context);
 		
 		/**
 		 * If we are within the CLI, just output the error message

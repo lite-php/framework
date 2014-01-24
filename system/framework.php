@@ -21,11 +21,13 @@ require_once('constants.php');
  */
 require_once('classes/registry.php');
 require_once('classes/errors/handler.php');
+require_once('classes/klogger.php');
 
 /**
  * Get an instance of the ErrorHandler object and store it globally.
  */
 Registry::set('ErrorHandler', ErrorHandler::getInstance());
+Registry::set("SystemLogger", KLogger::instance(dirname(SYSTEM_PATH) . "/logs"));
 
 /**
  * Load the enviroment IO Classes.
@@ -79,3 +81,8 @@ Registry::set('Application',	new Application());
  */
 define('SYSTEM_BOOT_TIME', number_format((microtime(true) - SYSTEM_START_TIME), 4));
 define('APPLICATION_START_TIME', microtime(true));
+
+/**
+ * Log that the framework is bootstrapped
+ */
+Registry::get("SystemLogger")->logInfo("Framework Bootstrapped");
