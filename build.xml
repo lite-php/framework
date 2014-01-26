@@ -27,6 +27,7 @@
 		<delete dir="${basedir}/build/coverage"/>
 		<delete dir="${basedir}/build/logs"/>
 		<delete dir="${basedir}/build/pdepend"/>
+		<delete dir="${basedir}/build/docs"/>
 	</target>
 
 	<!-- Build preperation -->
@@ -74,7 +75,11 @@
 		<exec executable="phpmd">
 			<arg path="${basedir}/system" />
 			<arg value="text" />
-			<arg value="${basedir}/build/phpmd.xml" />
+			<!-- <arg value="cleancode" /> -->
+			<arg value="codesize" />
+			<arg value="design" />
+			<arg value="naming" />
+			<arg value="unusedcode" />
 		</exec>
 	</target>
 
