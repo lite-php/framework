@@ -17,6 +17,16 @@
 require_once('constants.php');
 
 /**
+ * Enable debugging if in development mode
+ */
+if(ENVIRONMENT === 'development')
+{
+	ini_set('display_errors',1);
+	ini_set('display_startup_errors',1);
+	error_reporting(-1);
+}
+
+/**
  * Require core system classes
  */
 require_once('classes/registry.php');
