@@ -65,7 +65,7 @@ class HTTPInput
 	 */
 	public function isAjax()
 	{
-		return strtolower($this->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest';
+		return strtolower($this->server('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest';
 	}
 
 	/**
@@ -93,6 +93,41 @@ class HTTPInput
 	public function getRequestURI()
 	{
 		return $this->server('REQUEST_URI');
+	}
+
+	/**
+	 * Get the scheme for the current schema.
+	 * @return String Current request scheme.
+	 */
+	public function getScheme()
+	{
+		return HTTP_PROTOCOL == 'https://' ? "http" : "https";
+	}
+
+	/**
+	 * FReturn the extension of teh current URI if exists
+	 */
+	public function getExtension()
+	{
+		throw new Exception("HTTPInput::getExtension not yet implemented");
+	}
+
+	/**
+	 * Return the referrer
+	 * @return String Referer string or Null
+	 */
+	public function getReferrer()
+	{
+		return $this->server('HTTP_REFERER');
+	}
+
+	/**
+	 * Return the user agent strinmg
+	 * @return String Useragent
+	 */
+	public function getUserAgent()
+	{
+		return $this->server('HTTP_USER_AGENT');
 	}
 
 	/**
@@ -228,8 +263,11 @@ class HTTPInput
 		{
 			if($this->env($index, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
 			{
-				return $this->env($index);
+				$this->ip = $this->env($index);
+				break;
 			}
 		}
+
+		return $this->ip;
 	}
 }

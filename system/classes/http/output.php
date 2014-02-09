@@ -264,11 +264,20 @@ class HTTPOutput
 		{
 			throw new Exception("Cannot redirect, headers are already sent.");
 		}
-
+		
 		/**
 		 * Add the header
 		 */
 		$this->setHeader('Location', $location);
+
+		/**
+		 * Check for special keywords
+		 */
+		if($location == "back")
+		{
+			$this->setHeader('Location', $_SERVER['HTTP_REFERER']);
+		}
+
 
 		/**
 		 * Terminate the request if required.
