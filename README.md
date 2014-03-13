@@ -63,7 +63,7 @@ Hello <?php echo $this->hello ?>
 Well, lets say you build a website that has around 10,000 daily visits, without LitePHP you would load all your code and then
 carry out your work.
 
-If a user goes to `/user/16456/` on your website, you are more than lily going to need database and templates to show that page, but what
+If a user goes to `/user/16456/` on your website, you are more than likely going to need database and templates to show that page, but what
 if another user at the same times goes to `/help/`? are we going to need database on this page, its less likely.
 
 With LitePHP, you only load stuff when you actually need it, so it free's up resources for other request to be handled faster.
