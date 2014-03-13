@@ -1,4 +1,4 @@
-# LitePHP - A *Lite* waight PHP Framework.
+# LitePHP - A *Lite* weight PHP Framework.
 
 ###What is LitePHP
 LitePHP is a PHP Framework that is designed to be fast, light and small. This project is not specifically designed to help you build a website as quick as possible, but more about giving you the structure and utilities to build a stable and well structured application.
