@@ -64,12 +64,12 @@ Well, lets say you build a website that has around 10,000 daily visits, without 
 carry out your work.
 
 If a user goes to `/user/16456/` on your website, you are more than likely going to need database and templates to show that page, but what
-if another user at the same times goes to `/help/`? are we going to need database on this page, its less likely.
+if another user at the same times goes to `/help/` it is less likely that we will need the database, but under many conventional frameworks we would connect to the database for no reason, slowing page load.
 
 With LitePHP, you only load stuff when you actually need it, so it free's up resources for other request to be handled faster.
 
 ###Console
-We are activly developing to allow you to build *MC* Console Applications as well, this will allow you to build an application in the exact same way
+We are actively developing to allow you to build *MC* Console Applications as well, this will allow you to build an application in the exact same way
 as building a web application, but using a different output method.
 
 A example of a console app is:
