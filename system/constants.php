@@ -87,12 +87,12 @@
 /**
  * Define true if we are runnning opn php5.3
  */
-!defined('IS_PHP5_3') && define('IS_PHP5_3', version_compare(PHP_VERSION, '5.3.0', '>=') >= 0);
+!defined('IS_PHP5_3') && define('IS_PHP5_3', version_compare(PHP_VERSION, '5.3.0', '>='));
 
 /**
  * Define true if we are runnning opn php5.5
  */
-!defined('IS_PHP5_5') && define('IS_PHP5_5', version_compare(PHP_VERSION, '5.5.0', '>=') >= 0);
+!defined('IS_PHP5_5') && define('IS_PHP5_5', version_compare(PHP_VERSION, '5.5.0', '>='));
 
 /**
  * Define true if we are runnning on php6
