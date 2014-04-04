@@ -2,7 +2,7 @@
 /**
  * LightPHP Framework
  * LitePHP is a framework that has been designed to be lite waight, extensible and fast.
- * 
+ *
  * @author Robert Pitt <robertpitt1988@gmail.com>
  * @category core
  * @copyright 2013 Robert Pitt
@@ -31,13 +31,11 @@ if(ENVIRONMENT === 'development')
  */
 require_once('classes/registry.php');
 require_once('classes/errors/handler.php');
-require_once('classes/klogger.php');
 
 /**
  * Get an instance of the ErrorHandler object and store it globally.
  */
 Registry::set('ErrorHandler', ErrorHandler::getInstance());
-Registry::set("SystemLogger", KLogger::instance(dirname(SYSTEM_PATH) . "/logs"));
 
 /**
  * Load the enviroment IO Classes.
@@ -83,7 +81,7 @@ Registry::set('ModelLoader',	new ModelLoader());
 Registry::set('LibraryLoader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
 Registry::set('HelperLoader',	new HelperLoader());
-Registry::set('Route',			new Route());
+Registry::set('Route',		new Route());
 Registry::set('Application',	new Application());
 
 /**
@@ -91,8 +89,3 @@ Registry::set('Application',	new Application());
  */
 define('SYSTEM_BOOT_TIME', number_format((microtime(true) - SYSTEM_START_TIME), 4));
 define('APPLICATION_START_TIME', microtime(true));
-
-/**
- * Log that the framework is bootstrapped
- */
-Registry::get("SystemLogger")->logInfo("Framework Bootstrapped");

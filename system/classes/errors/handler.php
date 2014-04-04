@@ -126,7 +126,6 @@ class ErrorHandler
 		 * Send teh report ot the log file
 		 */
 		error_log($report);
-		Registry::get("SystemLogger")->logError("ERROR Report:: {$report}");
 	}
 
 	/**
@@ -151,7 +150,7 @@ class ErrorHandler
 		 * Log the exception if it's not a HTTP Exception
 		 */
 		!$isHttpException && $this->log_exception($context);
-		
+
 		/**
 		 * If we are within the CLI, just output the error message
 		 */
@@ -163,7 +162,7 @@ class ErrorHandler
 			 */
 			return;
 		}
-		
+
 		/**
 		 * Attaempt tp clear out any buffers
 		 */
@@ -214,7 +213,7 @@ class ErrorHandler
 			require $_generic;
 			exit(0);
 		}
-		
+
 		/**
 		 * Require the template
 		 */
