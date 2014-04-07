@@ -45,10 +45,6 @@ class Controller
 			case 'view':
 				return Registry::get('View');
 			break;
-			
-			case 'logger':
-				return Registry::get('Logger');
-			break;
 
 			case 'model':
 				return Registry::get('ModelLoader');
