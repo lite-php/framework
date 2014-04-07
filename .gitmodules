@@ -22,3 +22,6 @@
 [submodule "system/libraries/gravatar"]
 	path = system/libraries/gravatar
 	url = https://github.com/lite-php/gravatar-library.git
+[submodule "system/libraries/fluentlogger"]
+	path = system/libraries/fluentlogger
+	url = https://github.com/lite-php/fluentlogger-library.git
