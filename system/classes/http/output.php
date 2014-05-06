@@ -275,7 +275,14 @@ class HTTPOutput
 		 */
 		if($location == "back")
 		{
-			$this->setHeader('Location', $_SERVER['HTTP_REFERER']);
+			if(!empty($_SERVER['HTTP_REFERER']))
+			{
+				$this->setHeader('Location', $_SERVER['HTTP_REFERER']);
+			}
+			else
+			{
+				$this->setHeader('Location', "/");
+			}
 		}
 
 
