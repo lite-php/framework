@@ -190,6 +190,14 @@ class Route
 	}
 
 	/**
+	 * Returns the controller name
+	 */
+	public function setController($controller)
+	{
+		return $this->controller = $controller;
+	}
+
+	/**
 	 * Returns the method name
 	 */
 	public function getMethod()
@@ -213,12 +221,25 @@ class Route
 		return $this->arguments;
 	}
 
+	public function setArgument($index, $value)
+	{
+		$this->arguments[$index - 1] = $value;
+	}
+
 	/**
 	 * Returns an argument at a specific index, otherwise a defualt value
 	 */
 	public function getArgumentsAt($position, $default = null)
 	{
 		return !empty($this->arguments[$position -1]) ? $this->arguments[$position -1] : $default;
+	}
+
+	/**
+	 * Shift the arguments for rerouting
+	 */
+	public function shiftArguments()
+	{
+		return array_shift($this->arguments);
 	}
 
 	/**

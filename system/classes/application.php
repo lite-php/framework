@@ -23,6 +23,11 @@ class Application
 	private $applicationPath;
 
 	/**
+	 * Controller path
+	 */
+	private $controllerPath = "controllers";
+
+	/**
 	 * Applciation Constructor
 	 */
 	public function __construct(){}
@@ -78,11 +83,39 @@ class Application
 		 */
 		if(!$this->controllerExists($route->getController()))
 		{
+			if(!$this->controllerExists($route->getController() . "/" . $route->getMethod()))
+			{
+				/**
+				 * Should send a 404 here
+				 */
+				throw new Exception("Not found!", 404);
+			}
+
 			/**
-			 * Should send a 404 here
+			 * Update the controller path
 			 */
-			throw new Exception("Not found!", 404);
+			$this->setControllerPath($this->controllerPath . "/" . $route->getController());
+
+			/**
+			 * Update the controller
+			 */
+			$route->setController($route->getMethod());
+
+			/**
+			 * If we do not have a first paramter then default it to index.
+			 * note the code below will pop this off and use it as the method
+			 */
+			if(!$route->getArgumentsAt(1))
+			{
+				$route->setArgument(1, "index");
+			}
+
+			/**
+			 * Shift the arguments and set the method to the first arg.
+			 */
+			$route->setMethod($route->shiftArguments());
 		}
+
 
 		/**
 		 * If we are able to load the vendor bootstrap then do that now.
@@ -194,10 +227,15 @@ class Application
 		/**
 		 * Validate that there is a controllers folder
 		 */
-		if(!is_dir($this->applicationPath . '/controllers'))
+		if(!is_dir($this->applicationPath . '/' . $this->controllerPath))
 		{
 			throw new Exception('Application does not contain a controllers folder', 500);
 		}
+	}
+
+	public function setControllerPath($path)
+	{
+		$this->controllerPath = $path;
 	}
 
 	/**
@@ -230,7 +268,7 @@ class Application
 	 */
 	public function controllerExists($controller)
 	{
-		return file_exists($this->getResourceLocation('controllers', $controller, 'php'));
+		return file_exists($this->getResourceLocation($this->controllerPath, $controller, 'php'));
 	}
 
 	/**
@@ -238,9 +276,14 @@ class Application
 	 * @param  string $controller
 	 * @return string
 	 */
-	public function getControllerPath($controller)
+	public function getControllerPath($controller, $folder = null)
 	{
-		return $this->getResourceLocation('controllers', $controller, 'php');
+		if(!$folder)
+		{
+			return $this->getResourceLocation($this->controllerPath, $controller, 'php');
+		}
+
+		return $this->getResourceLocation($this->controllerPath, $folder . "/" . $controller, 'php');
 	}
 
 	/**
