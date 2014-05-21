@@ -221,6 +221,11 @@ class Route
 		return $this->arguments;
 	}
 
+	/**
+	 * Set a arguments value at a specific position
+	 * @param int $index position, not zero based
+	 * @param string $value Value to be assigned
+	 */
 	public function setArgument($index, $value)
 	{
 		$this->arguments[$index - 1] = $value;
@@ -240,6 +245,11 @@ class Route
 	public function shiftArguments()
 	{
 		return array_shift($this->arguments);
+	}
+
+	public function unshiftArguments($value)
+	{
+		return array_unshift($this->arguments, $value);
 	}
 
 	/**

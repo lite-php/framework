@@ -28,6 +28,11 @@ class Application
 	private $controllerPath = "controllers";
 
 	/**
+	 * 
+	 */
+	private $isSubController = false;
+
+	/**
 	 * Applciation Constructor
 	 */
 	public function __construct(){}
@@ -90,6 +95,11 @@ class Application
 				 */
 				throw new Exception("Not found!", 404);
 			}
+
+			/**
+			 * Make as a subcontroller
+			 */
+			$this->isSubController = true;
 
 			/**
 			 * Update the controller path
@@ -231,6 +241,11 @@ class Application
 		{
 			throw new Exception('Application does not contain a controllers folder', 500);
 		}
+	}
+
+	public function isSubController()
+	{
+		return $this->isSubController;
 	}
 
 	public function setControllerPath($path)
