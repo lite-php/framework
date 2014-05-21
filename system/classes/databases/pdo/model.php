@@ -127,7 +127,7 @@ class PDO_Model extends PDO
 			/**
 			 * Call the parent constructor
 			 */
-			parent::__construct($config->dsn, $config->username, $config->password, $config->driver_options);
+			parent::__construct($config->dsn, $config->username, $config->password, $options);
         }
         catch(Exception $e)
         {
@@ -445,5 +445,31 @@ class PDO_Model extends PDO
     {
         $this->setAttribute(self::ATTR_FETCH_TABLE_NAMES, $option);
         $this->fetch_table_names = $option;
+    }
+
+    /**
+     * Returns an array with PDO named parameter keys, for use with bind in statements
+     * @param  array  $array  Array ofvalues to bind
+     * @param  string $prefix Optional prefi to unique the bind strings (if more
+     *                        than on bind in is being used in the statement)
+     * @return array          Associative array with named parameter keeys (:key)
+     */
+    function getBindInArray($array, $prefix = '') {
+        $i = 1;
+        $output = array();
+        foreach ($array as $value) {
+            $output[":{$prefix}_bindIn_" . $i] = $value;
+            $i += 1;
+        }
+        return $output;
+    }
+
+    /**
+     * Returns a string for the named parameter keys
+     * @param  array  $array Array of key value pairs to bind
+     * @return string        Comma delimited stringof all values
+     */
+    function getBindInString($array) {
+        return implode(' , ', array_keys($array));
     }
 }
