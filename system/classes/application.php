@@ -28,14 +28,16 @@ class Application
 	private $controllerPath = "controllers";
 
 	/**
-	 * 
+	 * Is sub controller within the request
 	 */
 	private $isSubController = false;
 
 	/**
 	 * Applciation Constructor
 	 */
-	public function __construct(){}
+	public function __construct()
+	{
+	}
 
 	/**
 	 * Set the base path of the application that should be run.
@@ -67,6 +69,14 @@ class Application
 		 * Validate the application.
 		 */
 		$this->validateApplication();
+
+		/**
+		 * Bootstrap the application
+		 */
+		if(file_exists($this->getResourceLocation(null, "bootstrap", "php")))
+		{
+			require_once $this->getResourceLocation(null, "bootstrap", "php");
+		}
 
 		/**
 		 * Fetch the requested route
@@ -136,9 +146,19 @@ class Application
 		}
 
 		/**
+		 * Trigger pre controller hook 
+		 */
+		Registry::get("Hooks")->do_action("system.pre_controller_load");
+
+		/**
 		 * Load the controller
 		 */
 		require_once $this->getControllerPath($route->getController());
+
+		/**
+		 * Trigger post controller hook 
+		 */
+		Registry::get("Hooks")->do_action("system.post_controller_load");
 
 		/**
 		 * Containes the fill controller class name
@@ -163,7 +183,9 @@ class Application
 		 * Create a new instance of the controller class
 		 * @var Controller
 		 */
+		Registry::get("Hooks")->do_action("system.pre_controller_init");
 		$controller = $reflect->newInstance();
+		Registry::get("Hooks")->do_action("system.post_controller_init", $controller);
 
 		/**
 		 * Validate the class a valid class
@@ -217,7 +239,9 @@ class Application
 		/**
 		 * Run the method, we may implement a utility here
 		 */
-		call_user_func_array(array($controller, $route->getMethod()), $route->getArguments());
+		Registry::get("Hooks")->do_action("system.pre_action_call");
+		$result = call_user_func_array(array($controller, $route->getMethod()), $route->getArguments());
+		Registry::get("Hooks")->do_action("system.post_action_call", $result);
 	}
 
 	/**
@@ -243,11 +267,19 @@ class Application
 		}
 	}
 
+	/**
+	 * Return true if the application is routing to a sub controller
+	 * @return boolean
+	 */
 	public function isSubController()
 	{
 		return $this->isSubController;
 	}
 
+	/**
+	 * Set the controller path if different to the default controllers/ path.
+	 * @param String $path
+	 */
 	public function setControllerPath($path)
 	{
 		$this->controllerPath = $path;
@@ -270,9 +302,6 @@ class Application
 	 */
 	public function getResourceLocation($folder = false, $file = false, $ext = false)
 	{
-		/**
-		 * Value to return defaults to the application root
-		 */
 		return $this->applicationPath . ($folder ? '/' . $folder : '') . ($file ? '/' . $file : '') . ($ext ? '.' . $ext : '');
 	}
 

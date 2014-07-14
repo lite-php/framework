@@ -52,7 +52,6 @@ require_once('classes/loaders/model.php');
 require_once('classes/loaders/library.php');
 require_once('classes/loaders/helper.php');
 require_once('classes/loaders/config.php');
-
 /**
  * Require the database layer, this needs to be abstracted to a library
  * but need to think about the Database Model Base.
@@ -65,23 +64,24 @@ require_once('classes/databases/autoload.php');
 require_once('classes/application.php');
 require_once('classes/mvc/controller.php');
 require_once('classes/mvc/view.php');
-require_once('classes/route.php');
-
-/**
- * Require other application dependancies
- * note: These classes may be changed toan autoload feature.
- */
 require_once('classes/view/template.php');
+require_once('classes/route.php');
+require_once('classes/hooks.php');
 
 /**
- * Instantiate objects into the registry
+ * Instantiate the hook management class
+ */
+Registry::set('Hooks',			new Hooks());
+
+/**
+ * Instantiate primary objects into the registry.
  */
 Registry::set('View',			new View());
 Registry::set('ModelLoader',	new ModelLoader());
 Registry::set('LibraryLoader',	new LibraryLoader());
 Registry::set('ConfigLoader',	new ConfigLoader());
 Registry::set('HelperLoader',	new HelperLoader());
-Registry::set('Route',		new Route());
+Registry::set('Route',			new Route());
 Registry::set('Application',	new Application());
 
 /**
