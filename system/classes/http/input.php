@@ -221,6 +221,15 @@ class HTTPInput
 	}
 
 	/**
+	 * Return the PHP INput stream.
+	 * @return {Resource}
+	 */
+	public function getInputStream()
+	{
+		return fopen("php://input", "r");
+	}
+
+	/**
 	 * Set a cookie
 	 * @todo Change this to appy the defaults from the configuration files
 	 */
