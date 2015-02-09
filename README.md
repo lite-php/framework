@@ -1,9 +1,9 @@
 # LitePHP - A *Lite* weight PHP Framework.
 
-###What is LitePHP
+### What is LitePHP
 LitePHP is a PHP Framework that is designed to be fast, light and small. This project is not specifically designed to help you build a website as quick as possible, but more about giving you the structure and utilities to build a stable and well structured application.
 
-###Features
+### Features
 - MVC
  - **Model** - A class that represents data
  - **View** - An output handler, passed a set of data and a template to generate output
@@ -37,8 +37,7 @@ LitePHP is a PHP Framework that is designed to be fast, light and small. This pr
 
 - Views
  - Views are like templates, you pass the view a set of data, and then tell it to render that set of data inside a particular view file. An example of this is shown below.
-
-#####controllers/index.php
+##### controllers/index.php
 ```php
 class Index_Controller extends Controller
 {
@@ -54,12 +53,12 @@ class Index_Controller extends Controller
 }
 ```
 
-#####views/index.php
+##### views/index.php
 ```php
 Hello <?php echo $this->hello ?>
 ```
 
-###Why are configurations, models and libraries loaded on the fly.
+### Why are configurations, models and libraries loaded on the fly.
 Well, lets say you build a website that has around 10,000 daily visits, without LitePHP you would load all your code and then
 carry out your work.
 
@@ -68,7 +67,7 @@ if another user at the same times goes to `/help/` it is less likely that we wil
 
 With LitePHP, you only load stuff when you actually need it, so it free's up resources for other request to be handled faster.
 
-###Console
+### Console
 We are actively developing to allow you to build *MC* Console Applications as well, this will allow you to build an application in the exact same way
 as building a web application, but using a different output method.
 
@@ -92,7 +91,10 @@ And then running like so
 
 `php -e cli.php utils gc`
 
-###Development
+### Resources
+  - [Restful Routing](https://gist.github.com/robertpitt/421ca3efabe5817b1d11)
+
+### Development
 LitePHP is currently sstill under heavy development, you are more than free to take it and do as you wish but currently its lacking
 a lot of strucutre.
 
@@ -109,12 +111,12 @@ if you wish to clone the project, just follow these instructures:
 The second clones all submodules as well as teh core framework, submodules are seperate repositories within the framework
 repository.
 
-###Requirements
+### Requirements
 - Coffee (1-2 cups per day)
 - PHP5 (we do not have an exact version as development is still very active)
 
-###Installation
+### Installation
 
-###Licence
+### Licence
 
 ###Documentation
