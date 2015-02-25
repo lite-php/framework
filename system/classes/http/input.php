@@ -40,6 +40,18 @@ class HTTPInput
 	protected $ip = '0.0.0.0';
 
 	/**
+	 * Request Body
+	 * @var String
+	 */
+	protected $body;
+
+	/**
+	 * Parsed request (query string from body)
+	 * @var Array
+	 */
+	protected $body_parsed;
+
+	/**
 	 * Initiates a new Input Object
 	 */
 	public function __construct()
@@ -191,7 +203,7 @@ class HTTPInput
 		/**
 		 * Return the get variable
 		 */
-		return $this->_filtered_input(INPUT_SERVER, $key, $filters, $options);
+		return $this->_filtered_input(INPUT_SERVER, strtoupper($key), $filters, $options);
 	}
 
 	/**
@@ -222,11 +234,68 @@ class HTTPInput
 
 	/**
 	 * Return the PHP INput stream.
-	 * @return {Resource}
+	 * @return {Resource|String}
 	 */
-	public function getInputStream()
+	public function getContents($asResource = false)
 	{
-		return fopen("php://input", "r");
+		if($asResource)
+		{
+			return fopen("php://input", "rb");
+		}
+
+		return $this->body ? $this->body : ($this->body = file_get_contents('php://input'));
+	}
+
+	/**
+	 * Check to see if the request has a JSON Payload
+	 * @return boolean
+	 */
+	public function hasJson()
+	{
+		return strstr($this->server('content_type'), '/json') == '/json';
+	}
+
+	/**
+	 * Return the JSON Object that was part of the request body
+	 * @return Object Decoded JSON Body
+ 	 */
+	public function json()
+	{
+		return $this->hasJson() ? json_decode($this->getContents(false), true) : null;
+	}
+
+	/**
+	 * This method returns the parsed content
+	 * @return {*}
+	 */
+	public function body()
+	{
+		/**
+		 * Return JSON Object if we have one.
+		 */
+		if($this->hasJson())
+		{
+			return $this->json();
+		}
+
+		/**
+		 * Return a parsed query string
+		 */
+		if(strstr($this->server('content_type'), 'x-www-form-urlencoded'))
+		{
+			if($this->body_parsed)
+			{
+				return $this->body_parsed;
+			}
+
+			parse_str($this->getContents(), $this->body_parsed);
+			return $this->body_parsed;
+		}
+
+		/**
+		 * Plain string.
+		 */
+		return $this->getContents();
 	}
 
 	/**
