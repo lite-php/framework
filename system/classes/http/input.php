@@ -72,6 +72,15 @@ class HTTPInput
 	}
 
 	/**
+	 * Return the request origin for this request
+	 * @return string
+	 */
+	public function getOrigin()
+	{
+		return $this->server('HTTP_ORIGIN');
+	}
+
+	/**
 	 * A simple check to see if the request is an XHR Request
 	 * @return boolean
 	 */
