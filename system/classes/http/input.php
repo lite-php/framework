@@ -348,9 +348,9 @@ class HTTPInput
 	{
 		foreach ($this->_ip_search as $index)
 		{
-			if($this->env($index, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
+			if($this->server($index, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6))
 			{
-				$this->ip = $this->env($index);
+				$this->ip = $this->server($index);
 				break;
 			}
 		}
