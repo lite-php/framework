@@ -261,7 +261,7 @@ class HTTPInput
 	 */
 	public function hasJson()
 	{
-		return strstr($this->server('content_type'), '/json') == '/json';
+		return substr($this->server("content_type"), 0, 16) == 'application/json';
 	}
 
 	/**
