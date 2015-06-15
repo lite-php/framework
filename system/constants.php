@@ -30,7 +30,7 @@
 /**
  * Configure the protocol were using
  */
-!defined("HTTP_PROTOCOL") && define('HTTP_PROTOCOL', "http" . (isset($_SERVER['HTTPS']) ? "s" : "") . "://");
+!defined("HTTP_PROTOCOL") && define('HTTP_PROTOCOL', "http" . (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? "s" : "") . "://");
 
 /**
  * Cofigure the http domain this system is running on
