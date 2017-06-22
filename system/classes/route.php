@@ -128,7 +128,7 @@ class Route
 				/**
 				 * Validate that the method name is valid, this also prevents directory traversal.
 				 */
-				if(!preg_match($this->construct_regex, $segments[0]))
+				if(!preg_match($this->construct_regex, $segments[1]))
 				{
 					throw new Exception("Invalid charators detecting in the route.");
 				}
